@@ -121,7 +121,7 @@ class GameEngine {
         getMyFactoriesInDanger();
 
         for (Factory myFactory : factories.getMyFactories()){
-            //TODO: Need a system to priorityze attacking nearer factories
+            //TODO: Need a system to prioritise attacking nearer factories
             setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactory);
             upgradeMyFactory(myFactory);
             attackEnemyFactories(myFactory, 3);
