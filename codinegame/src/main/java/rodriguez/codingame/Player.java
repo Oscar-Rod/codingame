@@ -151,20 +151,18 @@ class GameEngine {
     }
 
     private int enemyTroopsGoingToFactoryPonderingDistance(Factory target) {
-        //TODO: now if 2 troops attack at same time, the danger is ignored. If prod is 3, and next turn 2 troops of 3 each arrive, both are individually ignored, as 3 - 1 * 3 = 0
-        //TODO: if 1 troop of 6 attacks, the danger is acknowledged. If prod is 3: 6 - 1 * 3 = 3
-        int numberOfTroops = 0;
+        int[] arrayOfNumberTroopsWithDistanceAsIndex = new int[20];
         for (Troop troop : troops.getEnemyTroops()) {
             if (troop.getTarget() == target.getId()) {
-                //System.err.println("troops: " + troop.getCyborgs() + " TTO: " + troop.getTimeToObjective() + " target: " + target.getId());
-                int incomingEnemyTroops = (troop.getCyborgs() - troop.getTimeToObjective() * target.getProduction()) < 0 ? 0 : (troop.getCyborgs() - troop.getTimeToObjective() * target.getProduction());
-                //System.err.println("troops calculated: " + incomingEnemyTroops);
-                numberOfTroops = numberOfTroops + incomingEnemyTroops;
-                //System.err.println("Total troops: " + numberOfTroops);
+                arrayOfNumberTroopsWithDistanceAsIndex[troop.getTimeToObjective()-1] += troop.getCyborgs();
             }
         }
-        //System.err.println("Total troops after loop: " + numberOfTroops);
-        return numberOfTroops;
+        int numberOfEnemyTroops = 0;
+        for (int i = 0; i<20; i++){
+            int numberOfTroopsPonderingDistance = arrayOfNumberTroopsWithDistanceAsIndex[i] - target.getProduction() * (i + 1);
+            if (numberOfTroopsPonderingDistance > 0) numberOfEnemyTroops += numberOfTroopsPonderingDistance;
+        }
+        return numberOfEnemyTroops;
     }
 
     private void upgradeMyFactory(Factory myFactory) {
