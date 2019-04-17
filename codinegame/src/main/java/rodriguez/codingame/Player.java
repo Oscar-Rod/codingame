@@ -193,7 +193,7 @@ class GameEngine {
 
     private void attackEnemyFactories(Factory myFactory, int level){
         for (Factory enemyFactory : factories.getEnemyFactories()) {
-            if (enemyFactory.getProduction() == level) attackFactory(myFactory, enemyFactory);
+            if (enemyFactory.getProduction() == level && !enemyFactoriesAttacked.contains(enemyFactory.getId())) attackFactory(myFactory, enemyFactory);
         }
     }
 
@@ -210,6 +210,7 @@ class GameEngine {
         if (Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1 > myFactory.getCyborgs()) return;
 
         actionMove(myFactory, target, Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1);
+        enemyFactoriesAttacked.add(target.getId());
     }
 
     private void actionUpgrade(Factory factory){
