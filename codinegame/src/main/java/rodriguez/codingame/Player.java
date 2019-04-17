@@ -187,7 +187,7 @@ class GameEngine {
 
     private void attackNeutralFactories(Factory myFactory, int level) {
         for (Factory neutralFactory : factories.getNeutralFactories()) {
-            if (neutralFactory.getProduction() == level) attackFactory(myFactory, neutralFactory);
+            if (neutralFactory.getProduction() == level && !enemyFactoriesAttacked.contains(neutralFactory.getId())) attackFactory(myFactory, neutralFactory);
         }
     }
 
