@@ -89,10 +89,10 @@ class GameEngine {
 
 
     GameEngine() {
-        myFactoriesInDanger[0] = new ArrayList<Integer>();
-        myFactoriesInDanger[1] = new ArrayList<Integer>();
-        myFactoriesInDanger[2] = new ArrayList<Integer>();
-        myFactoriesInDanger[3] = new ArrayList<Integer>();
+        myFactoriesInDanger[0] = new ArrayList<Factory>();
+        myFactoriesInDanger[1] = new ArrayList<Factory>();
+        myFactoriesInDanger[2] = new ArrayList<Factory>();
+        myFactoriesInDanger[3] = new ArrayList<Factory>();
     }
 
     public void setMap(FactoriesMap map) {
@@ -118,12 +118,15 @@ class GameEngine {
         myFactoriesInDanger[1].clear();
         myFactoriesInDanger[2].clear();
         myFactoriesInDanger[3].clear();
-        getMyFactoriesInDanger();
 
         for (Factory myFactory : factories.getMyFactories()){
             //TODO: Need a system to prioritise attacking nearer factories
             setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactory);
+            if (myFactoriesInDanger[myFactory.getProduction()].contains(myFactory)) continue;
+            defendMyFactories(myFactory, 3);
+            defendMyFactories(myFactory, 2);
             upgradeMyFactory(myFactory);
+            defendMyFactories(myFactory, 1);
             attackEnemyFactories(myFactory, 3);
             attackEnemyFactories(myFactory, 2);
             attackNeutralFactories(myFactory, 3);
@@ -135,18 +138,50 @@ class GameEngine {
     }
 
     private void setNumberOfCyborgsToTheMaximumItIsSafeToSpend(Factory myFactory) {
-        int numberOfTroopsINeedToDefendMyFactory = myFactory.getCyborgs();
         int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(myFactory);
-        for (int i = 0; i < 20; i++){
-            if (foreseenNumberOfTroopsInTheFactory[i] < numberOfTroopsINeedToDefendMyFactory) numberOfTroopsINeedToDefendMyFactory = foreseenNumberOfTroopsInTheFactory[i];
-        }
+
+        int numberOfTroopsINeedToDefendMyFactory = getNumberOfTroopsINeedToDefendMyFactory(myFactory, foreseenNumberOfTroopsInTheFactory);
+
         System.err.println("To defend Factory " + myFactory.getId() + " I need: " + numberOfTroopsINeedToDefendMyFactory);
-        if (numberOfTroopsINeedToDefendMyFactory <= 0) myFactory.setCyborgs(0); //Factory will be conquered
+        if (numberOfTroopsINeedToDefendMyFactory <= 0) { //Factory will be conquered
+            //TODO: Use this to calculate the reinforcements and from where to send them
+            int[] numberOfTroopsAndNumberOfTurnsUntilArrival = findFirstReinforcementNeededAndTurnsUntilAttack(foreseenNumberOfTroopsInTheFactory);
+            myFactory.setAsEndangered();
+            myFactory.setNumberOfTroopsIncoming(Math.abs(numberOfTroopsAndNumberOfTurnsUntilArrival[0]));
+            myFactory.setNumberOfTurnsUntilArrival(numberOfTroopsAndNumberOfTurnsUntilArrival[1]);
+            myFactoriesInDanger[myFactory.getProduction()].add(myFactory);
+        }
         else myFactory.setCyborgs(numberOfTroopsINeedToDefendMyFactory);
     }
 
-    private void getMyFactoriesInDanger() {
-        //TODO: implement a way of finding and defending the factories in danger
+    private int[] findFirstReinforcementNeededAndTurnsUntilAttack(int[] foreseenNumberOfTroopsInTheFactory) {
+        int[] troopsAndTurn = new int[2];
+        for (int i = 0; i < 20; i++){
+            if (foreseenNumberOfTroopsInTheFactory[i] < 0) {
+                troopsAndTurn[0] = foreseenNumberOfTroopsInTheFactory[i];
+                troopsAndTurn[1] = i + 1;
+                break;
+            }
+        }
+        return troopsAndTurn;
+    }
+
+    private int getNumberOfTroopsINeedToDefendMyFactory(Factory myFactory, int[] foreseenNumberOfTroopsInTheFactory) {
+        int numberOfTroopsINeedToDefendMyFactory = myFactory.getCyborgs();
+        for (int i = 0; i < 20; i++){
+            if (foreseenNumberOfTroopsInTheFactory[i] < numberOfTroopsINeedToDefendMyFactory) numberOfTroopsINeedToDefendMyFactory = foreseenNumberOfTroopsInTheFactory[i];
+        }
+        return numberOfTroopsINeedToDefendMyFactory;
+    }
+
+    private void defendMyFactories(Factory myFactory, int level) {
+        List<Factory> listOfFactoriesInDanger = myFactoriesInDanger[level];
+        for (Factory endangeredFactory : listOfFactoriesInDanger) {
+            if (endangeredFactory.getNumberOfTroopsIncoming() > myFactory.getCyborgs()) continue;
+            if (endangeredFactory.getNumberOfTurnsUntilArrival() < map.getDistance(myFactory.getId(), endangeredFactory.getId())) continue;
+            System.err.println("Factory " + myFactory.getId() + " sending to: " + endangeredFactory.getId());
+            actionMove(myFactory, endangeredFactory, endangeredFactory.getNumberOfTroopsIncoming());
+        }
     }
 
     private int[] calculateForeseenNumberOfTroopsInTheFactory(Factory target){
@@ -247,12 +282,14 @@ class GameEngine {
 
 class FactoriesMap {
     private int[][] factories;
+    private int numberOfFactories;
 
     public FactoriesMap() {
     }
 
     public void setMapSize(int numberOfFactories) {
         factories = new int[numberOfFactories][numberOfFactories];
+        this.numberOfFactories = numberOfFactories;
     }
 
     public void add(int factory1, int factory2, int distance) {
@@ -262,6 +299,10 @@ class FactoriesMap {
 
     public int getDistance(int factory1, int factory2) {
         return factories[factory1][factory2];
+    }
+
+    public int getNumberOfFactories() {
+        return numberOfFactories;
     }
 }
 
@@ -365,6 +406,9 @@ class Factory {
     private int cyborgs;
     private int production;
     private int delay;
+    private boolean inDanger = false;
+    private int numberOfTroopsIncoming;
+    private int numberOfTurnsUntilArrival;
 
     public Factory() {
     }
@@ -411,6 +455,29 @@ class Factory {
         return delay;
     }
 
+    public void setAsEndangered() {
+        inDanger = true;
+    }
+
+    public boolean isInDanger() {
+        return inDanger;
+    }
+
+    public void setNumberOfTroopsIncoming(int numberOfTroops) {
+        numberOfTroopsIncoming = numberOfTroops;
+    }
+
+    public int getNumberOfTroopsIncoming() {
+        return numberOfTroopsIncoming;
+    }
+
+    public void setNumberOfTurnsUntilArrival(int turns) {
+        numberOfTurnsUntilArrival = turns;
+    }
+
+    public int getNumberOfTurnsUntilArrival() {
+        return numberOfTurnsUntilArrival;
+    }
 }
 
 class Troop {
