@@ -186,31 +186,34 @@ class GameEngine {
         //Positive number means I will have this number of troops in that factory at the given turn.
         //Negative number means enemy will have this number of troops in that factory at the given turn.
         //Index 0 is th next turn
-        int[] troopsArrivingEachTurnToTarget = new int[20];
-        int signOfTroops = target.getOwner() == 1 ? target.getOwner() : -1;
+        int[] myTroopsArrivingEachTurnToTarget = new int[20];
+        int[] enemyTroopsArrivingEachTurnToTarget = new int[20];
+        int signOfTroops = target.getOwner() == 1 ? 1 : -1;
         for (Troop troop : troops.getEnemyTroops()) {
             if (troop.getTarget() == target.getId()) {
-                troopsArrivingEachTurnToTarget[troop.getTimeToObjective() - 1] -= troop.getCyborgs();
+                enemyTroopsArrivingEachTurnToTarget[troop.getTimeToObjective() - 1] -= troop.getCyborgs();
             }
         }
 
         for (Troop troop : troops.getMyTroops()) {
             if (troop.getTarget() == target.getId()) {
-                troopsArrivingEachTurnToTarget[troop.getTimeToObjective() - 1] += troop.getCyborgs();
+                myTroopsArrivingEachTurnToTarget[troop.getTimeToObjective() - 1] += troop.getCyborgs();
             }
         }
         int[] totalTroopsArrivedUntilEachTurn = new int[20];
         for (int i = 0; i < 20; i++) {
             if (target.getOwner() != 0) {
                 if (i == 0)
-                    totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + target.getProduction()) * signOfTroops + troopsArrivingEachTurnToTarget[i];
+                    totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + target.getProduction()) * signOfTroops + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i];
                 else
-                    totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * signOfTroops + troopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
+                    totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * signOfTroops + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
             } else {
+                //TODO: Right now, neutral troops are positive and all others are negative.
+                //TODO: I need to continue this loop like that until neutral troops are neutralized, and then change the signs to keep the calculation, being enemy negatives and mine positives again.
                 if (i == 0)
-                    totalTroopsArrivedUntilEachTurn[i] = target.getCyborgs() * signOfTroops + troopsArrivingEachTurnToTarget[i];
+                    totalTroopsArrivedUntilEachTurn[i] = target.getCyborgs() - Math.abs(myTroopsArrivingEachTurnToTarget[i]) - Math.abs(enemyTroopsArrivingEachTurnToTarget[i]);
                 else
-                    totalTroopsArrivedUntilEachTurn[i] = troopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
+                    totalTroopsArrivedUntilEachTurn[i] = totalTroopsArrivedUntilEachTurn[i - 1] + - Math.abs(myTroopsArrivingEachTurnToTarget[i]) - Math.abs(enemyTroopsArrivingEachTurnToTarget[i]);
             }
         }
         return totalTroopsArrivedUntilEachTurn;

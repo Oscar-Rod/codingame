@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0d2c5d18-b5d0-4792-bcc9-b4492d96e4a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -14,42 +13,37 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CoverageViewManager">
+    <option name="myElementSize" value="293" />
+  </component>
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="512">
-              <caret line="249" column="31" selection-start-line="249" selection-start-column="31" selection-end-line="249" selection-end-column="31" />
+            <state relative-caret-position="480">
+              <caret line="210" column="91" lean-forward="true" selection-start-line="210" selection-start-column="91" selection-end-line="210" selection-end-column="91" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#12643#12644#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="8" lean-forward="true" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
+            <state relative-caret-position="256">
+              <caret line="86" selection-start-line="86" selection-end-line="86" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#265#266#0" expanded="true" />
                 <element signature="e#287#288#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -72,6 +66,7 @@
       <find>setFa</find>
       <find>MAX</find>
       <find>MIN</find>
+      <find>findFirstReinforcementNeededAndTurnsUntilAttack</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -83,9 +78,9 @@
         <option value="$PROJECT_DIR$/src/main/java/rodriguez/codingame2/Player.java" />
         <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/auxiliary.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" />
         <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" />
         <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" />
       </list>
     </option>
   </component>
@@ -146,17 +141,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="codingame" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="codinegame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="codinegame" type="462c0819:PsiDirectoryNode" />
-              <item name="target" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="codinegame" type="b2602c69:ProjectViewProjectNode" />
-              <item name="codinegame" type="462c0819:PsiDirectoryNode" />
-              <item name="target" type="462c0819:PsiDirectoryNode" />
-              <item name="classes" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -200,7 +184,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PlayerTest">
+  <component name="RunManager" selected="JUnit.PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory">
     <configuration name="PlayerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="codingame" />
       <extension name="coverage">
@@ -216,7 +200,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PlayerTest.shouldGetTheNumberOfTroopsINeedForDefense" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInEnemyFactory1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="codingame" />
       <extension name="coverage">
         <pattern>
@@ -226,13 +210,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="rodriguez.codingame" />
       <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
-      <option name="METHOD_NAME" value="shouldGetTheNumberOfTroopsINeedForDefense" />
+      <option name="METHOD_NAME" value="shouldCalculateTheCorrectNumberOfTroopsInEnemyFactory1" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PlayerTest.shouldSetMyFactoryAsEndangered" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="codingame" />
       <extension name="coverage">
         <pattern>
@@ -242,13 +226,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="rodriguez.codingame" />
       <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
-      <option name="METHOD_NAME" value="shouldSetMyFactoryAsEndangered" />
+      <option name="METHOD_NAME" value="shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PlayerTest.shouldSetMyFactoryAsEndangered1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PlayerTest.shouldNotSendTroopsToDefendMyFactory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="codingame" />
       <extension name="coverage">
         <pattern>
@@ -258,13 +242,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="rodriguez.codingame" />
       <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
-      <option name="METHOD_NAME" value="shouldSetMyFactoryAsEndangered1" />
+      <option name="METHOD_NAME" value="shouldNotSendTroopsToDefendMyFactory" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PlayerTest.shouldUpgradeTheFactory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PlayerTest.shouldSendTroopsToDefendMyFactory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="codingame" />
       <extension name="coverage">
         <pattern>
@@ -274,7 +258,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="rodriguez.codingame" />
       <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
-      <option name="METHOD_NAME" value="shouldUpgradeTheFactory" />
+      <option name="METHOD_NAME" value="shouldSendTroopsToDefendMyFactory" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -282,11 +266,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory" />
         <item itemvalue="JUnit.PlayerTest" />
-        <item itemvalue="JUnit.PlayerTest.shouldUpgradeTheFactory" />
-        <item itemvalue="JUnit.PlayerTest.shouldSetMyFactoryAsEndangered1" />
-        <item itemvalue="JUnit.PlayerTest.shouldSetMyFactoryAsEndangered" />
-        <item itemvalue="JUnit.PlayerTest.shouldGetTheNumberOfTroopsINeedForDefense" />
+        <item itemvalue="JUnit.PlayerTest.shouldSendTroopsToDefendMyFactory" />
+        <item itemvalue="JUnit.PlayerTest.shouldNotSendTroopsToDefendMyFactory" />
+        <item itemvalue="JUnit.PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInEnemyFactory1" />
       </list>
     </recent_temporary>
   </component>
@@ -304,35 +288,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="PlayerTest_shouldCalculateTheCorrectNumberOfEnemies1 - 2019.04.18 at 11h 52m 26s.xml">
-      <configuration name="PlayerTest.shouldCalculateTheCorrectNumberOfEnemies1" configurationId="JUnit" />
+    <history-entry file="PlayerTest_shouldSendTroopsToDefendMyFactory - 2019.04.18 at 14h 31m 26s.xml">
+      <configuration name="PlayerTest.shouldSendTroopsToDefendMyFactory" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PlayerTest_shouldGetTheNumberOfTroopsINeedForDefense - 2019.04.18 at 11h 56m 29s.xml">
-      <configuration name="PlayerTest.shouldGetTheNumberOfTroopsINeedForDefense" configurationId="JUnit" />
+    <history-entry file="PlayerTest_shouldSendTroopsToDefendMyFactory - 2019.04.18 at 14h 31m 31s.xml">
+      <configuration name="PlayerTest.shouldSendTroopsToDefendMyFactory" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PlayerTest - 2019.04.18 at 11h 57m 40s.xml">
+    <history-entry file="PlayerTest_shouldSendTroopsToDefendMyFactory - 2019.04.18 at 14h 31m 44s.xml">
+      <configuration name="PlayerTest.shouldSendTroopsToDefendMyFactory" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest_shouldNotSendTroopsToDefendMyFactory - 2019.04.18 at 14h 34m 30s.xml">
+      <configuration name="PlayerTest.shouldNotSendTroopsToDefendMyFactory" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest_shouldSendTroopsToDefendMyFactory - 2019.04.18 at 14h 34m 42s.xml">
+      <configuration name="PlayerTest.shouldSendTroopsToDefendMyFactory" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest_shouldSendTroopsToDefendMyFactory - 2019.04.18 at 14h 34m 56s.xml">
+      <configuration name="PlayerTest.shouldSendTroopsToDefendMyFactory" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest - 2019.04.18 at 14h 35m 15s.xml">
       <configuration name="PlayerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PlayerTest_shouldSetMyFactoryAsEndangered - 2019.04.18 at 12h 00m 00s.xml">
-      <configuration name="PlayerTest.shouldSetMyFactoryAsEndangered" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest_shouldSetMyFactoryAsEndangered1 - 2019.04.18 at 12h 01m 10s.xml">
-      <configuration name="PlayerTest.shouldSetMyFactoryAsEndangered1" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest - 2019.04.18 at 12h 01m 25s.xml">
+    <history-entry file="PlayerTest - 2019.04.18 at 14h 36m 21s.xml">
       <configuration name="PlayerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PlayerTest - 2019.04.18 at 13h 39m 33s.xml">
-      <configuration name="PlayerTest" configurationId="JUnit" />
+    <history-entry file="PlayerTest_shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory - 2019.04.18 at 14h 40m 20s.xml">
+      <configuration name="PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PlayerTest_shouldUpgradeTheFactory - 2019.04.18 at 13h 39m 45s.xml">
-      <configuration name="PlayerTest.shouldUpgradeTheFactory" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest - 2019.04.18 at 13h 40m 22s.xml">
-      <configuration name="PlayerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest - 2019.04.18 at 13h 40m 53s.xml">
-      <configuration name="PlayerTest" configurationId="JUnit" />
+    <history-entry file="PlayerTest_shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory - 2019.04.18 at 14h 40m 51s.xml">
+      <configuration name="PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -348,15 +332,16 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32955536" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32955536" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.17698343" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2859634" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3897123" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.163034" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.28247604" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32868353" />
+      <window_info anchor="right" id="Coverage" side_tool="true" visible="true" weight="0.3298887" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -367,17 +352,10 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java</url>
-          <line>67</line>
-          <properties />
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/codinegame$PlayerTest.ic" NAME="PlayerTest Coverage Results" MODIFIED="1555598180939" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>rodriguez.codingame.*</FILTER>
+    </SUITE>
   </component>
   <component name="editorHistoryManager">
     <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/stream/ReferencePipeline.class">
@@ -402,31 +380,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="512">
-          <caret line="249" column="31" selection-start-line="249" selection-start-column="31" selection-end-line="249" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="18" column="44" selection-start-line="18" selection-start-column="44" selection-end-line="18" selection-end-column="44" />
+        <state relative-caret-position="600">
+          <caret line="46" column="48" selection-start-line="46" selection-start-column="48" selection-end-line="46" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="8" lean-forward="true" selection-start-line="24" selection-start-column="8" selection-end-line="24" selection-end-column="8" />
+        <state relative-caret-position="256">
+          <caret line="86" selection-start-line="86" selection-end-line="86" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#265#266#0" expanded="true" />
             <element signature="e#287#288#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="210" column="91" lean-forward="true" selection-start-line="210" selection-start-column="91" selection-end-line="210" selection-end-column="91" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#12643#12644#0" expanded="true" />
           </folding>
         </state>
       </provider>

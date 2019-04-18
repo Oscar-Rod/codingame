@@ -42,7 +42,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void shouldCalculateTheCorrectNumberOfEnemies() {
+    public void shouldCalculateTheCorrectNumberOfTroopsInMyFactory() {
         auxiliary.setFactory(0,1,10,2,0);
         auxiliary.setTroop(-1, 5,0, 10, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
@@ -59,7 +59,41 @@ public class PlayerTest {
     }
 
     @Test
-    public void shouldCalculateTheCorrectNumberOfEnemies1() {
+    public void shouldCalculateTheCorrectNumberOfTroopsInEnemyFactory() {
+        auxiliary.setFactory(0,-1,10,2,0);
+        auxiliary.setTroop(1, 5,0, 10, 5);
+        auxiliary.setTroop(1, 5,0, 15, 3);
+        auxiliary.setTroop(-1, 5,0, 4, 2);
+        Factory myFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
+        assertThat(enemiesPerTurn[0]).isEqualTo(-12);
+        assertThat(enemiesPerTurn[1]).isEqualTo(-18);
+        assertThat(enemiesPerTurn[2]).isEqualTo(-5);
+        assertThat(enemiesPerTurn[3]).isEqualTo(-7);
+        assertThat(enemiesPerTurn[4]).isEqualTo(1);
+        assertThat(enemiesPerTurn[5]).isEqualTo(-1);
+        assertThat(enemiesPerTurn[6]).isEqualTo(-3);
+    }
+
+    @Test
+    public void shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory() {
+        auxiliary.setFactory(0,0,10,2,0);
+        auxiliary.setTroop(1, 5,0, 10, 5);
+        auxiliary.setTroop(1, 5,0, 15, 3);
+        auxiliary.setTroop(-1, 5,0, 4, 2);
+        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
+        assertThat(enemiesPerTurn[0]).isEqualTo(-10);
+        assertThat(enemiesPerTurn[1]).isEqualTo(-6);
+        assertThat(enemiesPerTurn[2]).isEqualTo(-9);
+        assertThat(enemiesPerTurn[3]).isEqualTo(-9);
+        assertThat(enemiesPerTurn[4]).isEqualTo(-19);
+        assertThat(enemiesPerTurn[5]).isEqualTo(-19);
+        assertThat(enemiesPerTurn[6]).isEqualTo(-19);
+    }
+
+    @Test
+    public void shouldCalculateTheCorrectNumberOfTroopsInMyFactory1() {
         auxiliary.setFactory(0,1,10,2,0);
         auxiliary.setTroop(-1, 5,0, 8, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
@@ -73,6 +107,23 @@ public class PlayerTest {
         assertThat(enemiesPerTurn[4]).isEqualTo(1);
         assertThat(enemiesPerTurn[5]).isEqualTo(3);
         assertThat(enemiesPerTurn[6]).isEqualTo(5);
+    }
+
+    @Test
+    public void shouldCalculateTheCorrectNumberOfTroopsInEnemyFactory1() {
+        auxiliary.setFactory(0,-1,10,2,0);
+        auxiliary.setTroop(1, 5,0, 8, 5);
+        auxiliary.setTroop(1, 5,0, 15, 3);
+        auxiliary.setTroop(-1, 5,0, 4, 2);
+        Factory myFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
+        assertThat(enemiesPerTurn[0]).isEqualTo(-12);
+        assertThat(enemiesPerTurn[1]).isEqualTo(-18);
+        assertThat(enemiesPerTurn[2]).isEqualTo(-5);
+        assertThat(enemiesPerTurn[3]).isEqualTo(-7);
+        assertThat(enemiesPerTurn[4]).isEqualTo(-1);
+        assertThat(enemiesPerTurn[5]).isEqualTo(-3);
+        assertThat(enemiesPerTurn[6]).isEqualTo(-5);
     }
 
     @Test
@@ -114,7 +165,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void shouldSetMyFactoryAsEndangered1() {
+    public void shouldNotSetMyFactoryAsEndangered() {
         auxiliary.setFactory(0,1,10,2,0);
         auxiliary.setTroop(-1, 5,0, 8, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
@@ -124,4 +175,49 @@ public class PlayerTest {
 
         assertThat(myFactory.isInDanger()).isFalse();
     }
+
+    @Test
+    public void shouldSendTroopsToDefendMyFactory() {
+        auxiliary.setFactory(0,1,10,2,0);
+        auxiliary.setFactory(1,1,10,2,0);
+        auxiliary.setTroop(-1, 5,0, 30, 15);
+        auxiliary.setTroop(-1, 5,0, 15, 3);
+        auxiliary.setTroop(1, 5,0, 4, 2);
+        Factory myFactoryInDanger = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactoryToSendTroops = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 1).findFirst().get();
+        engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactoryInDanger);
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactoryInDanger);
+        int troopsNeeded = engine.getNumberOfTroopsINeedToDefendMyFactory(myFactoryInDanger, enemiesPerTurn);
+        engine.defendMyFactories(myFactoryToSendTroops, 2);
+        assertThat(myFactoryInDanger.isInDanger()).isTrue();
+        assertThat(myFactoryInDanger.getNumberOfTroopsIncoming()).isEqualTo(1);
+        assertThat(troopsNeeded).isEqualTo(-1);
+        assertThat(myFactoryInDanger.getNumberOfTurnsUntilArrival()).isEqualTo(15);
+        assertThat(myFactoryToSendTroops.getCyborgs()).isEqualTo(9);
+        assertThat(myFactoryToSendTroops.getCyborgs()).isEqualTo(10 - Math.abs(troopsNeeded));
+        assertThat(engine.actions).contains("MOVE 1 0 1");
+    }
+
+    @Test
+    public void shouldNotSendTroopsToDefendMyFactory() {
+        auxiliary.setFactory(0,1,10,2,0);
+        auxiliary.setFactory(1,1,10,2,0);
+        auxiliary.setTroop(-1, 5,0, 10, 5);
+        auxiliary.setTroop(-1, 5,0, 15, 3);
+        auxiliary.setTroop(1, 5,0, 4, 2);
+        Factory myFactoryInDanger = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactoryToSendTroops = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 1).findFirst().get();
+        engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactoryInDanger);
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactoryInDanger);
+        int troopsNeeded = engine.getNumberOfTroopsINeedToDefendMyFactory(myFactoryInDanger, enemiesPerTurn);
+        engine.defendMyFactories(myFactoryToSendTroops, 2);
+        assertThat(myFactoryInDanger.isInDanger()).isTrue();
+        assertThat(myFactoryInDanger.getNumberOfTroopsIncoming()).isEqualTo(1);
+        assertThat(troopsNeeded).isEqualTo(-1);
+        assertThat(myFactoryInDanger.getNumberOfTurnsUntilArrival()).isEqualTo(5);
+        assertThat(myFactoryToSendTroops.getCyborgs()).isEqualTo(10);
+        assertThat(engine.actions).isEmpty();
+    }
+
+    //TODO: Test findFirstReinforcementNeededAndTurnsUntilAttack
 }
