@@ -83,7 +83,6 @@ class GameEngine {
     FactoriesList factories;
     TroopsList troops;
     BombsList bombs;
-    List<Integer> enemyFactoriesAttacked = new ArrayList<>();
     List<String> actions = new ArrayList<>();
     List[] myFactoriesInDanger = new ArrayList[4];
 
@@ -112,7 +111,6 @@ class GameEngine {
     }
 
     public void move() {
-        enemyFactoriesAttacked.clear();
         actions.clear();
         myFactoriesInDanger[0].clear();
         myFactoriesInDanger[1].clear();
@@ -122,7 +120,7 @@ class GameEngine {
         for (Factory myFactory : factories.getMyFactories()){
             //TODO: Need a system to prioritise attacking nearer factories
             setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactory);
-            if (myFactoriesInDanger[myFactory.getProduction()].contains(myFactory)) continue;
+            if (myFactory.isInDanger()) continue;
             defendMyFactories(myFactory, 3);
             defendMyFactories(myFactory, 2);
             upgradeMyFactory(myFactory);
@@ -222,13 +220,13 @@ class GameEngine {
 
     private void attackNeutralFactories(Factory myFactory, int level) {
         for (Factory neutralFactory : factories.getNeutralFactories()) {
-            if (neutralFactory.getProduction() == level && !enemyFactoriesAttacked.contains(neutralFactory.getId())) attackFactory(myFactory, neutralFactory);
+            if (neutralFactory.getProduction() == level && !neutralFactory.isBeingAttackedByMe()) attackFactory(myFactory, neutralFactory);
         }
     }
 
     private void attackEnemyFactories(Factory myFactory, int level){
         for (Factory enemyFactory : factories.getEnemyFactories()) {
-            if (enemyFactory.getProduction() == level && !enemyFactoriesAttacked.contains(enemyFactory.getId())) attackFactory(myFactory, enemyFactory);
+            if (enemyFactory.getProduction() == level && !enemyFactory.isBeingAttackedByMe()) attackFactory(myFactory, enemyFactory);
         }
     }
 
@@ -245,7 +243,7 @@ class GameEngine {
         if (Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1 > myFactory.getCyborgs()) return;
 
         actionMove(myFactory, target, Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1);
-        enemyFactoriesAttacked.add(target.getId());
+        target.setAsIAmAttackingIt();
     }
 
     private void actionUpgrade(Factory factory){
@@ -407,6 +405,7 @@ class Factory {
     private int production;
     private int delay;
     private boolean inDanger = false;
+    private boolean alreadyBeingAttackedByMe = false;
     private int numberOfTroopsIncoming;
     private int numberOfTurnsUntilArrival;
 
@@ -477,6 +476,14 @@ class Factory {
 
     public int getNumberOfTurnsUntilArrival() {
         return numberOfTurnsUntilArrival;
+    }
+
+    public void setAsIAmAttackingIt() {
+        alreadyBeingAttackedByMe = true;
+    }
+
+    public boolean isBeingAttackedByMe() {
+        return alreadyBeingAttackedByMe;
     }
 }
 
