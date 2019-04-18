@@ -142,7 +142,6 @@ class GameEngine {
 
         System.err.println("To defend Factory " + myFactory.getId() + " I need: " + numberOfTroopsINeedToDefendMyFactory);
         if (numberOfTroopsINeedToDefendMyFactory <= 0) { //Factory will be conquered
-            //TODO: Use this to calculate the reinforcements and from where to send them
             int[] numberOfTroopsAndNumberOfTurnsUntilArrival = findFirstReinforcementNeededAndTurnsUntilAttack(foreseenNumberOfTroopsInTheFactory);
             myFactory.setAsEndangered();
             myFactory.setNumberOfTroopsIncoming(Math.abs(numberOfTroopsAndNumberOfTurnsUntilArrival[0]));
@@ -238,13 +237,7 @@ class GameEngine {
     }
 
     public void attackFactory(Factory myFactory, Factory target) {
-        int numberOfTroopsINeedToConquerTheFactory = -1 * target.getCyborgs();
-        int distanceBetweenFactories = map.getDistance(myFactory.getId(), target.getId());
-        int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(target);
-        for (int i = distanceBetweenFactories - 1; i < 20; i++) {
-            if (foreseenNumberOfTroopsInTheFactory[i] > numberOfTroopsINeedToConquerTheFactory)
-                numberOfTroopsINeedToConquerTheFactory = foreseenNumberOfTroopsInTheFactory[i];
-        }
+        int numberOfTroopsINeedToConquerTheFactory = getNumberOfTroopsINeedToConquerTheFactory(myFactory, target);
         System.err.println("To Conquer Factory " + target.getId() + " I need: " + numberOfTroopsINeedToConquerTheFactory);
         if (numberOfTroopsINeedToConquerTheFactory > 0) return; //Factory is already being conquered
 
@@ -252,6 +245,17 @@ class GameEngine {
 
         actionMove(myFactory, target, Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1);
         target.setAsIAmAttackingIt();
+    }
+
+    public int getNumberOfTroopsINeedToConquerTheFactory(Factory myFactory, Factory target) {
+        int numberOfTroopsINeedToConquerTheFactory = -1 * target.getCyborgs();
+        int distanceBetweenFactories = map.getDistance(myFactory.getId(), target.getId());
+        int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(target);
+        for (int i = distanceBetweenFactories - 1; i < 20; i++) {
+            if (foreseenNumberOfTroopsInTheFactory[i] > numberOfTroopsINeedToConquerTheFactory)
+                numberOfTroopsINeedToConquerTheFactory = foreseenNumberOfTroopsInTheFactory[i];
+        }
+        return numberOfTroopsINeedToConquerTheFactory;
     }
 
     public void actionUpgrade(Factory factory) {
