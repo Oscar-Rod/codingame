@@ -2,7 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d2c5d18-b5d0-4792-bcc9-b4492d96e4a8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Bomb.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Bomb.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/BombsState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/FactoriesMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rodriguez/codingame/FactoriesMap.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/FactoriesState.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Factory.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Factory.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/GameEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rodriguez/codingame/GameEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Player.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Troop.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/rodriguez/codingame/Troop.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/rodriguez/codingame/TroopsState.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -20,25 +33,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+            <state relative-caret-position="225">
+              <caret line="221" column="22" selection-start-line="221" selection-start-column="22" selection-end-line="221" selection-end-column="22" />
               <folding>
-                <element signature="e#11912#11913#0" expanded="true" />
-                <element signature="e#11946#11947#0" expanded="true" />
-                <element signature="e#12490#12491#0" expanded="true" />
-                <element signature="e#12530#12531#0" expanded="true" />
-                <element signature="e#15569#15570#0" expanded="true" />
-                <element signature="e#15600#15601#0" expanded="true" />
-                <element signature="e#15677#15678#0" expanded="true" />
-                <element signature="e#15708#15709#0" expanded="true" />
-                <element signature="e#15779#15780#0" expanded="true" />
-                <element signature="e#15841#15842#0" expanded="true" />
-                <element signature="e#15975#15976#0" expanded="true" />
-                <element signature="e#16019#16020#0" expanded="true" />
-                <element signature="e#15941#15942#0" expanded="true" />
-                <element signature="e#15989#15990#0" expanded="true" />
-                <element signature="e#16182#16183#0" expanded="true" />
-                <element signature="e#16229#16230#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -47,8 +45,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+            <state relative-caret-position="360">
+              <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,8 +59,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JUnit4 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -68,6 +69,7 @@
       <find>setCyborgs</find>
       <find>System.err.println</find>
       <find>System.err.println(&quot;Debug messages...&quot;)</find>
+      <find>setFa</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -76,8 +78,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/rodriguez/codingame2/Player.java" />
+        <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/auxiliary.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" />
         <option value="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" />
         <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" />
       </list>
@@ -123,25 +127,33 @@
               <item name="codinegame" type="b2602c69:ProjectViewProjectNode" />
               <item name="codinegame" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="codinegame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="codinegame" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="codinegame" type="b2602c69:ProjectViewProjectNode" />
               <item name="codinegame" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="codingame" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="codinegame" type="b2602c69:ProjectViewProjectNode" />
               <item name="codinegame" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="codingame" type="462c0819:PsiDirectoryNode" />
-              <item name="Player.java" type="529ef68f:ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="codinegame" type="b2602c69:ProjectViewProjectNode" />
+              <item name="codinegame" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="classes" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -163,6 +175,12 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="rodriguez.codingame" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/rodriguez/codingame2" />
     </key>
@@ -179,6 +197,28 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="PlayerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="codingame" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="rodriguez.codingame.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="rodriguez.codingame" />
+      <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.PlayerTest" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -192,11 +232,25 @@
     </task>
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="PlayerTest - 2019.04.18 at 11h 06m 33s.xml">
+      <configuration name="PlayerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest - 2019.04.18 at 11h 07m 34s.xml">
+      <configuration name="PlayerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest - 2019.04.18 at 11h 08m 33s.xml">
+      <configuration name="PlayerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest - 2019.04.18 at 11h 08m 40s.xml">
+      <configuration name="PlayerTest" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="31" width="2564" height="1273" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12400636" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12480127" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -205,12 +259,12 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32955536" />
-      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32955536" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.17698343" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.163034" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32914287" />
@@ -225,13 +279,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="40" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar!/java/util/stream/ReferencePipeline.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -247,35 +294,37 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame2/Player.java" />
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="34" column="21" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="37" selection-start-line="13" selection-start-column="37" selection-end-line="13" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="10" column="8" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="8" />
+        <state relative-caret-position="225">
+          <caret line="221" column="22" selection-start-line="221" selection-start-column="22" selection-end-line="221" selection-end-column="22" />
           <folding>
-            <element signature="e#11912#11913#0" expanded="true" />
-            <element signature="e#11946#11947#0" expanded="true" />
-            <element signature="e#12490#12491#0" expanded="true" />
-            <element signature="e#12530#12531#0" expanded="true" />
-            <element signature="e#15569#15570#0" expanded="true" />
-            <element signature="e#15600#15601#0" expanded="true" />
-            <element signature="e#15677#15678#0" expanded="true" />
-            <element signature="e#15708#15709#0" expanded="true" />
-            <element signature="e#15779#15780#0" expanded="true" />
-            <element signature="e#15841#15842#0" expanded="true" />
-            <element signature="e#15975#15976#0" expanded="true" />
-            <element signature="e#16019#16020#0" expanded="true" />
-            <element signature="e#15941#15942#0" expanded="true" />
-            <element signature="e#15989#15990#0" expanded="true" />
-            <element signature="e#16182#16183#0" expanded="true" />
-            <element signature="e#16229#16230#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="24" selection-start-line="4" selection-start-column="24" selection-end-line="4" selection-end-column="24" />
+        <state relative-caret-position="360">
+          <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

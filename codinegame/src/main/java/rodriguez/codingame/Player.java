@@ -117,7 +117,7 @@ class GameEngine {
         myFactoriesInDanger[2].clear();
         myFactoriesInDanger[3].clear();
 
-        for (Factory myFactory : factories.getMyFactories()){
+        for (Factory myFactory : factories.getMyFactories()) {
             //TODO: Need a system to prioritise attacking nearer factories
             setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactory);
             if (myFactory.isInDanger()) continue;
@@ -135,7 +135,7 @@ class GameEngine {
         executeActions();
     }
 
-    private void setNumberOfCyborgsToTheMaximumItIsSafeToSpend(Factory myFactory) {
+    public void setNumberOfCyborgsToTheMaximumItIsSafeToSpend(Factory myFactory) {
         int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(myFactory);
 
         int numberOfTroopsINeedToDefendMyFactory = getNumberOfTroopsINeedToDefendMyFactory(myFactory, foreseenNumberOfTroopsInTheFactory);
@@ -148,13 +148,12 @@ class GameEngine {
             myFactory.setNumberOfTroopsIncoming(Math.abs(numberOfTroopsAndNumberOfTurnsUntilArrival[0]));
             myFactory.setNumberOfTurnsUntilArrival(numberOfTroopsAndNumberOfTurnsUntilArrival[1]);
             myFactoriesInDanger[myFactory.getProduction()].add(myFactory);
-        }
-        else myFactory.setCyborgs(numberOfTroopsINeedToDefendMyFactory);
+        } else myFactory.setCyborgs(numberOfTroopsINeedToDefendMyFactory);
     }
 
-    private int[] findFirstReinforcementNeededAndTurnsUntilAttack(int[] foreseenNumberOfTroopsInTheFactory) {
+    public int[] findFirstReinforcementNeededAndTurnsUntilAttack(int[] foreseenNumberOfTroopsInTheFactory) {
         int[] troopsAndTurn = new int[2];
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < 20; i++) {
             if (foreseenNumberOfTroopsInTheFactory[i] < 0) {
                 troopsAndTurn[0] = foreseenNumberOfTroopsInTheFactory[i];
                 troopsAndTurn[1] = i + 1;
@@ -164,25 +163,27 @@ class GameEngine {
         return troopsAndTurn;
     }
 
-    private int getNumberOfTroopsINeedToDefendMyFactory(Factory myFactory, int[] foreseenNumberOfTroopsInTheFactory) {
+    public int getNumberOfTroopsINeedToDefendMyFactory(Factory myFactory, int[] foreseenNumberOfTroopsInTheFactory) {
         int numberOfTroopsINeedToDefendMyFactory = myFactory.getCyborgs();
-        for (int i = 0; i < 20; i++){
-            if (foreseenNumberOfTroopsInTheFactory[i] < numberOfTroopsINeedToDefendMyFactory) numberOfTroopsINeedToDefendMyFactory = foreseenNumberOfTroopsInTheFactory[i];
+        for (int i = 0; i < 20; i++) {
+            if (foreseenNumberOfTroopsInTheFactory[i] < numberOfTroopsINeedToDefendMyFactory)
+                numberOfTroopsINeedToDefendMyFactory = foreseenNumberOfTroopsInTheFactory[i];
         }
         return numberOfTroopsINeedToDefendMyFactory;
     }
 
-    private void defendMyFactories(Factory myFactory, int level) {
+    public void defendMyFactories(Factory myFactory, int level) {
         List<Factory> listOfFactoriesInDanger = myFactoriesInDanger[level];
         for (Factory endangeredFactory : listOfFactoriesInDanger) {
             if (endangeredFactory.getNumberOfTroopsIncoming() > myFactory.getCyborgs()) continue;
-            if (endangeredFactory.getNumberOfTurnsUntilArrival() < map.getDistance(myFactory.getId(), endangeredFactory.getId())) continue;
+            if (endangeredFactory.getNumberOfTurnsUntilArrival() < map.getDistance(myFactory.getId(), endangeredFactory.getId()))
+                continue;
             System.err.println("Factory " + myFactory.getId() + " sending to: " + endangeredFactory.getId());
             actionMove(myFactory, endangeredFactory, endangeredFactory.getNumberOfTroopsIncoming());
         }
     }
 
-    private int[] calculateForeseenNumberOfTroopsInTheFactory(Factory target){
+    public int[] calculateForeseenNumberOfTroopsInTheFactory(Factory target) {
         //Positive number means I will have this number of troops in that factory at the given turn.
         //Negative number means enemy will have this number of troops in that factory at the given turn.
         //Index 0 is th next turn
@@ -190,52 +191,59 @@ class GameEngine {
         int signOfTroops = target.getOwner() == 1 ? target.getOwner() : -1;
         for (Troop troop : troops.getEnemyTroops()) {
             if (troop.getTarget() == target.getId()) {
-                troopsArrivingEachTurnToTarget[troop.getTimeToObjective()-1] -= troop.getCyborgs();
+                troopsArrivingEachTurnToTarget[troop.getTimeToObjective() - 1] -= troop.getCyborgs();
             }
         }
 
         for (Troop troop : troops.getMyTroops()) {
             if (troop.getTarget() == target.getId()) {
-                troopsArrivingEachTurnToTarget[troop.getTimeToObjective()-1] += troop.getCyborgs();
+                troopsArrivingEachTurnToTarget[troop.getTimeToObjective() - 1] += troop.getCyborgs();
             }
         }
         int[] totalTroopsArrivedUntilEachTurn = new int[20];
-        for (int i = 0; i<20; i++){
-            if (target.getOwner() != 0){
-                if (i == 0) totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + target.getProduction()) * signOfTroops + troopsArrivingEachTurnToTarget[i];
-                else totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * signOfTroops + troopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i-1];
+        for (int i = 0; i < 20; i++) {
+            if (target.getOwner() != 0) {
+                if (i == 0)
+                    totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + target.getProduction()) * signOfTroops + troopsArrivingEachTurnToTarget[i];
+                else
+                    totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * signOfTroops + troopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
             } else {
-                if (i == 0) totalTroopsArrivedUntilEachTurn[i] = target.getCyborgs() * signOfTroops + troopsArrivingEachTurnToTarget[i];
-                else totalTroopsArrivedUntilEachTurn[i] = troopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i-1];
+                if (i == 0)
+                    totalTroopsArrivedUntilEachTurn[i] = target.getCyborgs() * signOfTroops + troopsArrivingEachTurnToTarget[i];
+                else
+                    totalTroopsArrivedUntilEachTurn[i] = troopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
             }
         }
         return totalTroopsArrivedUntilEachTurn;
     }
 
-    private void upgradeMyFactory(Factory myFactory) {
-        if (myFactory.getProduction() < 3 && myFactory.getCyborgs() > 10) {
+    public void upgradeMyFactory(Factory myFactory) {
+        if (myFactory.getProduction() < 3 && myFactory.getCyborgs() >= 10) {
             actionUpgrade(myFactory);
         }
     }
 
-    private void attackNeutralFactories(Factory myFactory, int level) {
+    public void attackNeutralFactories(Factory myFactory, int level) {
         for (Factory neutralFactory : factories.getNeutralFactories()) {
-            if (neutralFactory.getProduction() == level && !neutralFactory.isBeingAttackedByMe()) attackFactory(myFactory, neutralFactory);
+            if (neutralFactory.getProduction() == level && !neutralFactory.isBeingAttackedByMe())
+                attackFactory(myFactory, neutralFactory);
         }
     }
 
-    private void attackEnemyFactories(Factory myFactory, int level){
+    public void attackEnemyFactories(Factory myFactory, int level) {
         for (Factory enemyFactory : factories.getEnemyFactories()) {
-            if (enemyFactory.getProduction() == level && !enemyFactory.isBeingAttackedByMe()) attackFactory(myFactory, enemyFactory);
+            if (enemyFactory.getProduction() == level && !enemyFactory.isBeingAttackedByMe())
+                attackFactory(myFactory, enemyFactory);
         }
     }
 
-    private void attackFactory(Factory myFactory, Factory target){
+    public void attackFactory(Factory myFactory, Factory target) {
         int numberOfTroopsINeedToConquerTheFactory = -1 * target.getCyborgs();
         int distanceBetweenFactories = map.getDistance(myFactory.getId(), target.getId());
         int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(target);
-        for (int i = distanceBetweenFactories - 1; i < 20; i++){
-            if (foreseenNumberOfTroopsInTheFactory[i] > numberOfTroopsINeedToConquerTheFactory) numberOfTroopsINeedToConquerTheFactory = foreseenNumberOfTroopsInTheFactory[i];
+        for (int i = distanceBetweenFactories - 1; i < 20; i++) {
+            if (foreseenNumberOfTroopsInTheFactory[i] > numberOfTroopsINeedToConquerTheFactory)
+                numberOfTroopsINeedToConquerTheFactory = foreseenNumberOfTroopsInTheFactory[i];
         }
         System.err.println("To Conquer Factory " + target.getId() + " I need: " + numberOfTroopsINeedToConquerTheFactory);
         if (numberOfTroopsINeedToConquerTheFactory > 0) return; //Factory is already being conquered
@@ -246,29 +254,29 @@ class GameEngine {
         target.setAsIAmAttackingIt();
     }
 
-    private void actionUpgrade(Factory factory){
+    public void actionUpgrade(Factory factory) {
         addAction("INC " + factory.getId());
         factory.setCyborgs(factory.getCyborgs() - 10);
     }
 
-    private void actionBomb(Factory origin, Factory target){
+    public void actionBomb(Factory origin, Factory target) {
         addAction("BOMB " + origin.getId() + " " + target.getId());
     }
 
-    private void actionMove(Factory origin, Factory target, int numberOfTroops){
+    public void actionMove(Factory origin, Factory target, int numberOfTroops) {
         addAction("MOVE " + origin.getId() + " " + target.getId() + " " + numberOfTroops);
         origin.setCyborgs(origin.getCyborgs() - numberOfTroops);
     }
 
-    private void addAction(String action){
-       actions.add(action);
+    public void addAction(String action) {
+        actions.add(action);
     }
 
-    private void executeActions(){
+    public void executeActions() {
         if (actions.isEmpty()) System.out.println("WAIT");
         else {
             StringBuilder nextMove = new StringBuilder(actions.get(0));
-            for (int i = 1; i < actions.size(); i++){
+            for (int i = 1; i < actions.size(); i++) {
                 nextMove.append(";").append(actions.get(i));
             }
             System.out.println(nextMove.toString());
