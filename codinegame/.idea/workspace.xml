@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0d2c5d18-b5d0-4792-bcc9-b4492d96e4a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -15,31 +13,31 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageViewManager">
-    <option name="myElementSize" value="239" />
+    <option name="myElementSize" value="236" />
   </component>
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="288" column="50" selection-start-line="288" selection-start-column="50" selection-end-line="288" selection-end-column="50" />
+            <state relative-caret-position="525">
+              <caret line="268" column="67" lean-forward="true" selection-start-line="268" selection-start-column="67" selection-end-line="268" selection-end-column="67" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#14135#14136#0" expanded="true" />
+                <element signature="e#13911#13912#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="606">
-              <caret line="409" column="70" selection-start-line="409" selection-start-column="70" selection-end-line="409" selection-end-column="70" />
+            <state relative-caret-position="4695">
+              <caret line="313" column="36" selection-start-line="313" selection-start-column="36" selection-end-line="313" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#265#266#0" expanded="true" />
@@ -69,6 +67,7 @@
       <find>MIN</find>
       <find>findFirstReinforcementNeededAndTurnsUntilAttack</find>
       <find>getNumberOfTroopsINeedToDefendMyFactory</find>
+      <find>System.err.</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -81,8 +80,8 @@
         <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/auxiliary.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/Auxiliary.java" />
-        <option value="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" />
         <option value="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" />
       </list>
     </option>
   </component>
@@ -297,15 +296,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="PlayerTest_shouldReturnTwo - 2019.04.22 at 10h 17m 00s.xml">
-      <configuration name="PlayerTest.shouldReturnTwo" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest - 2019.04.22 at 10h 17m 08s.xml">
-      <configuration name="PlayerTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest_shouldCalculateForEnemyFactory - 2019.04.22 at 10h 20m 24s.xml">
-      <configuration name="PlayerTest.shouldCalculateForEnemyFactory" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="PlayerTest_shouldReturnTwo - 2019.04.22 at 10h 21m 01s.xml">
       <configuration name="PlayerTest.shouldReturnTwo" configurationId="JUnit" />
     </history-entry>
@@ -325,6 +315,15 @@
       <configuration name="PlayerTest.shouldReturnFive" configurationId="JUnit" />
     </history-entry>
     <history-entry file="PlayerTest - 2019.04.22 at 11h 14m 17s.xml">
+      <configuration name="PlayerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest_shouldReturn4 - 2019.04.22 at 11h 18m 46s.xml">
+      <configuration name="PlayerTest.shouldReturn4" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest - 2019.04.22 at 11h 18m 52s.xml">
+      <configuration name="PlayerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest - 2019.04.22 at 11h 26m 11s.xml">
       <configuration name="PlayerTest" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -350,7 +349,7 @@
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32868353" />
-      <window_info anchor="right" id="Coverage" side_tool="true" visible="true" weight="0.19515103" />
+      <window_info anchor="right" id="Coverage" side_tool="true" weight="0.19515103" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -361,23 +360,11 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java</url>
-          <line>280</line>
-          <properties />
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/codinegame$PlayerTest_shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfEnemyConquerIt.ic" NAME="PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfEnemyConquerIt Coverage Results" MODIFIED="1555920376196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>rodriguez.codingame.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/codinegame$PlayerTest.ic" NAME="PlayerTest Coverage Results" MODIFIED="1555925887532" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/codinegame$PlayerTest.ic" NAME="PlayerTest Coverage Results" MODIFIED="1555932370284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>rodriguez.codingame.*</FILTER>
     </SUITE>
   </component>
@@ -418,25 +405,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="288" column="50" selection-start-line="288" selection-start-column="50" selection-end-line="288" selection-end-column="50" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#14135#14136#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="606">
-          <caret line="409" column="70" selection-start-line="409" selection-start-column="70" selection-end-line="409" selection-end-column="70" />
+        <state relative-caret-position="4695">
+          <caret line="313" column="36" selection-start-line="313" selection-start-column="36" selection-end-line="313" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#265#266#0" expanded="true" />
             <element signature="e#287#288#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="268" column="67" lean-forward="true" selection-start-line="268" selection-start-column="67" selection-end-line="268" selection-end-column="67" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#13911#13912#0" expanded="true" />
           </folding>
         </state>
       </provider>

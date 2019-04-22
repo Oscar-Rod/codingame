@@ -140,7 +140,6 @@ class GameEngine {
         int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(myFactory);
 
         int numberOfTroopsINeedToDefendMyFactory = getNumberOfTroopsINeedToDefendMyFactory(myFactory, foreseenNumberOfTroopsInTheFactory);
-        System.err.println("To defend Factory " + myFactory.getId() + " I need: " + numberOfTroopsINeedToDefendMyFactory);
         if (numberOfTroopsINeedToDefendMyFactory <= 0) { //Factory will be conquered
             int[] numberOfTroopsAndNumberOfTurnsUntilArrival = findFirstReinforcementNeededAndTurnsUntilAttack(foreseenNumberOfTroopsInTheFactory);
             myFactory.setAsEndangered();
@@ -178,7 +177,6 @@ class GameEngine {
             if (endangeredFactory.getNumberOfTroopsIncoming() > myFactory.getCyborgs()) continue;
             if (endangeredFactory.getNumberOfTurnsUntilArrival() < map.getDistance(myFactory.getId(), endangeredFactory.getId()))
                 continue;
-            System.err.println("Factory " + myFactory.getId() + " sending to: " + endangeredFactory.getId());
             actionMove(myFactory, endangeredFactory, endangeredFactory.getNumberOfTroopsIncoming());
         }
     }
@@ -268,7 +266,6 @@ class GameEngine {
 
     public void attackFactory(Factory myFactory, Factory target) {
         int numberOfTroopsINeedToConquerTheFactory = getNumberOfTroopsINeedToConquerTheFactory(myFactory, target);
-        System.err.println("To Conquer Factory " + target.getId() + " I need: " + numberOfTroopsINeedToConquerTheFactory);
         if (numberOfTroopsINeedToConquerTheFactory == 0) return; //Factory is already being conquered
 
         if (numberOfTroopsINeedToConquerTheFactory > myFactory.getCyborgs()) return;
