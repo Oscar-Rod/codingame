@@ -125,6 +125,7 @@ class GameEngine {
             defendMyFactories(myFactory, 2);
             upgradeMyFactory(myFactory);
             defendMyFactories(myFactory, 1);
+            defendMyFactories(myFactory, 0);
             attackEnemyFactories(myFactory, 3);
             attackEnemyFactories(myFactory, 2);
             attackNeutralFactories(myFactory, 3);
@@ -139,7 +140,6 @@ class GameEngine {
         int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(myFactory);
 
         int numberOfTroopsINeedToDefendMyFactory = getNumberOfTroopsINeedToDefendMyFactory(myFactory, foreseenNumberOfTroopsInTheFactory);
-
         System.err.println("To defend Factory " + myFactory.getId() + " I need: " + numberOfTroopsINeedToDefendMyFactory);
         if (numberOfTroopsINeedToDefendMyFactory <= 0) { //Factory will be conquered
             int[] numberOfTroopsAndNumberOfTurnsUntilArrival = findFirstReinforcementNeededAndTurnsUntilAttack(foreseenNumberOfTroopsInTheFactory);
@@ -148,6 +148,16 @@ class GameEngine {
             myFactory.setNumberOfTurnsUntilArrival(numberOfTroopsAndNumberOfTurnsUntilArrival[1]);
             myFactoriesInDanger[myFactory.getProduction()].add(myFactory);
         } else myFactory.setCyborgs(numberOfTroopsINeedToDefendMyFactory);
+    }
+
+    public int getNumberOfTroopsINeedToDefendMyFactory(Factory myFactory, int[] foreseenNumberOfTroopsInTheFactory) {
+        int numberOfTroopsINeedToDefendMyFactory = myFactory.getCyborgs();
+        for (int i = 0; i < 20; i++) {
+            if (foreseenNumberOfTroopsInTheFactory[i] < numberOfTroopsINeedToDefendMyFactory)
+                numberOfTroopsINeedToDefendMyFactory = foreseenNumberOfTroopsInTheFactory[i];
+            if (numberOfTroopsINeedToDefendMyFactory < 0) break;
+        }
+        return numberOfTroopsINeedToDefendMyFactory;
     }
 
     public int[] findFirstReinforcementNeededAndTurnsUntilAttack(int[] foreseenNumberOfTroopsInTheFactory) {
@@ -160,16 +170,6 @@ class GameEngine {
             }
         }
         return troopsAndTurn;
-    }
-
-    public int getNumberOfTroopsINeedToDefendMyFactory(Factory myFactory, int[] foreseenNumberOfTroopsInTheFactory) {
-        int numberOfTroopsINeedToDefendMyFactory = myFactory.getCyborgs();
-        for (int i = 0; i < 20; i++) {
-            if (foreseenNumberOfTroopsInTheFactory[i] < numberOfTroopsINeedToDefendMyFactory)
-                numberOfTroopsINeedToDefendMyFactory = foreseenNumberOfTroopsInTheFactory[i];
-            if (numberOfTroopsINeedToDefendMyFactory < 0) break;
-        }
-        return numberOfTroopsINeedToDefendMyFactory;
     }
 
     public void defendMyFactories(Factory myFactory, int level) {
@@ -203,14 +203,18 @@ class GameEngine {
         int[] totalTroopsArrivedUntilEachTurn = new int[20];
         if (target.getOwner() != 0) {
             for (int i = 0; i < 20; i++) {
+                int production = target.getProduction();
+                if (target.getDelay() != 0) production = 0;
                 if (i == 0)
-                    totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + target.getProduction()) * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i];
+                    totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + production) * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i];
                 else
-                    totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
+                    totalTroopsArrivedUntilEachTurn[i] = production * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
 
-                int signOfTroops = totalTroopsArrivedUntilEachTurn[i] / Math.abs(totalTroopsArrivedUntilEachTurn[i]);
-                if (target.getOwner() != signOfTroops){
-                    target.setOwner(target.getOwner() * -1);
+                if (totalTroopsArrivedUntilEachTurn[i] != 0) {
+                    int signOfTroops = Integer.signum(totalTroopsArrivedUntilEachTurn[i]);
+                    if (target.getOwner() != signOfTroops) {
+                        target.setOwner(target.getOwner() * -1);
+                    }
                 }
             }
         } else {
@@ -231,7 +235,7 @@ class GameEngine {
                     }
                 } else {
                     totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
-                    int signOfTroops = totalTroopsArrivedUntilEachTurn[i] / Math.abs(totalTroopsArrivedUntilEachTurn[i]);
+                    int signOfTroops = Integer.signum(totalTroopsArrivedUntilEachTurn[i]);
                     if (target.getOwner() != signOfTroops){
                         target.setOwner(target.getOwner() * -1);
                     }
@@ -265,23 +269,25 @@ class GameEngine {
     public void attackFactory(Factory myFactory, Factory target) {
         int numberOfTroopsINeedToConquerTheFactory = getNumberOfTroopsINeedToConquerTheFactory(myFactory, target);
         System.err.println("To Conquer Factory " + target.getId() + " I need: " + numberOfTroopsINeedToConquerTheFactory);
-        if (numberOfTroopsINeedToConquerTheFactory > 0) return; //Factory is already being conquered
+        if (numberOfTroopsINeedToConquerTheFactory == 0) return; //Factory is already being conquered
 
-        if (Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1 > myFactory.getCyborgs()) return;
+        if (numberOfTroopsINeedToConquerTheFactory > myFactory.getCyborgs()) return;
 
-        actionMove(myFactory, target, Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1);
+        actionMove(myFactory, target, numberOfTroopsINeedToConquerTheFactory);
         target.setAsIAmAttackingIt();
     }
 
     public int getNumberOfTroopsINeedToConquerTheFactory(Factory myFactory, Factory target) {
-        int numberOfTroopsINeedToConquerTheFactory = -1 * target.getCyborgs();
+        int numberOfTroopsINeedToConquerTheFactory = Integer.MIN_VALUE;
         int distanceBetweenFactories = map.getDistance(myFactory.getId(), target.getId());
         int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(target);
-        for (int i = distanceBetweenFactories - 1; i < 20; i++) {
+        for (int i = distanceBetweenFactories; i < 20; i++) {
+            if (numberOfTroopsINeedToConquerTheFactory > 0 && foreseenNumberOfTroopsInTheFactory[i] < 0) numberOfTroopsINeedToConquerTheFactory = Integer.MIN_VALUE;
             if (foreseenNumberOfTroopsInTheFactory[i] > numberOfTroopsINeedToConquerTheFactory)
                 numberOfTroopsINeedToConquerTheFactory = foreseenNumberOfTroopsInTheFactory[i];
         }
-        return numberOfTroopsINeedToConquerTheFactory;
+        if (numberOfTroopsINeedToConquerTheFactory > 0) return 0;
+        return Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1;
     }
 
     public void actionUpgrade(Factory factory) {

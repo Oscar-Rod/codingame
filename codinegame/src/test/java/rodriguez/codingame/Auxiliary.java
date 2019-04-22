@@ -4,12 +4,13 @@ public class Auxiliary {
 
     final FactoriesList factories = new FactoriesList();
     final TroopsList troops = new TroopsList();
+    GameEngine engine;
 
     public GameEngine engineForTesting() {
 
         final FactoriesMap map = new FactoriesMap();
         final BombsList bombs = new BombsList();
-        final GameEngine engine = new GameEngine();
+        engine = new GameEngine();
         int factoryCount = 3; // the number of factories
         int linkCount = 3; // the number of links between factories
         map.setMapSize(factoryCount);
@@ -26,6 +27,10 @@ public class Auxiliary {
         engine.setBombs(bombs);
 
         return engine;
+    }
+
+    public void setDistance(Factory factory1, Factory factory2, int distance) {
+        engine.map.add(factory1.getId(), factory2.getId(), distance);
     }
 
     public void setFactory(int id, int owner, int cyborg, int production, int delay){
