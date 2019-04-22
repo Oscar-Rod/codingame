@@ -188,7 +188,6 @@ class GameEngine {
         //Index 0 is th next turn
         int[] myTroopsArrivingEachTurnToTarget = new int[20];
         int[] enemyTroopsArrivingEachTurnToTarget = new int[20];
-        int signOfTroops = target.getOwner() == 1 ? 1 : -1;
         for (Troop troop : troops.getEnemyTroops()) {
             if (troop.getTarget() == target.getId()) {
                 enemyTroopsArrivingEachTurnToTarget[troop.getTimeToObjective() - 1] -= troop.getCyborgs();
@@ -201,21 +200,44 @@ class GameEngine {
             }
         }
         int[] totalTroopsArrivedUntilEachTurn = new int[20];
-        for (int i = 0; i < 20; i++) {
-            if (target.getOwner() != 0) {
+        if (target.getOwner() != 0) {
+            for (int i = 0; i < 20; i++) {
                 if (i == 0)
-                    totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + target.getProduction()) * signOfTroops + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i];
+                    totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() + target.getProduction()) * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i];
                 else
-                    totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * signOfTroops + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
-            } else {
-                //TODO: Right now, neutral troops are positive and all others are negative.
-                //TODO: I need to continue this loop like that until neutral troops are neutralized, and then change the signs to keep the calculation, being enemy negatives and mine positives again.
-                if (i == 0)
-                    totalTroopsArrivedUntilEachTurn[i] = target.getCyborgs() - Math.abs(myTroopsArrivingEachTurnToTarget[i]) - Math.abs(enemyTroopsArrivingEachTurnToTarget[i]);
-                else
-                    totalTroopsArrivedUntilEachTurn[i] = totalTroopsArrivedUntilEachTurn[i - 1] + - Math.abs(myTroopsArrivingEachTurnToTarget[i]) - Math.abs(enemyTroopsArrivingEachTurnToTarget[i]);
+                    totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
+
+                int signOfTroops = totalTroopsArrivedUntilEachTurn[i] / Math.abs(totalTroopsArrivedUntilEachTurn[i]);
+                if (target.getOwner() != signOfTroops){
+                    target.setOwner(target.getOwner() * -1);
+                }
+            }
+        } else {
+            boolean conquered = false;
+            for (int i = 0; i < 20; i++) {
+                if (!conquered) {
+                    if (i == 0)
+                        totalTroopsArrivedUntilEachTurn[i] = (target.getCyborgs() - Math.abs(myTroopsArrivingEachTurnToTarget[i]) - Math.abs(enemyTroopsArrivingEachTurnToTarget[i])) * -1;
+                    else
+                        totalTroopsArrivedUntilEachTurn[i] = (Math.abs(totalTroopsArrivedUntilEachTurn[i - 1]) - Math.abs(myTroopsArrivingEachTurnToTarget[i]) - Math.abs(enemyTroopsArrivingEachTurnToTarget[i])) * -1;
+
+                    if (totalTroopsArrivedUntilEachTurn[i] > 0) {
+                        int newOwner = Math.abs(myTroopsArrivingEachTurnToTarget[i]) > Math.abs(enemyTroopsArrivingEachTurnToTarget[i]) ? 1 : -1;
+                        totalTroopsArrivedUntilEachTurn[i] = totalTroopsArrivedUntilEachTurn[i] * newOwner;
+                        target.setOwner(newOwner);
+                        conquered = true;
+
+                    }
+                } else {
+                    totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
+                    int signOfTroops = totalTroopsArrivedUntilEachTurn[i] / Math.abs(totalTroopsArrivedUntilEachTurn[i]);
+                    if (target.getOwner() != signOfTroops){
+                        target.setOwner(target.getOwner() * -1);
+                    }
+                }
             }
         }
+
         return totalTroopsArrivedUntilEachTurn;
     }
 

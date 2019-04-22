@@ -54,8 +54,8 @@ public class PlayerTest {
         assertThat(enemiesPerTurn[2]).isEqualTo(5);
         assertThat(enemiesPerTurn[3]).isEqualTo(7);
         assertThat(enemiesPerTurn[4]).isEqualTo(-1);
-        assertThat(enemiesPerTurn[5]).isEqualTo(1);
-        assertThat(enemiesPerTurn[6]).isEqualTo(3);
+        assertThat(enemiesPerTurn[5]).isEqualTo(-3);
+        assertThat(enemiesPerTurn[6]).isEqualTo(-5);
     }
 
     @Test
@@ -71,12 +71,12 @@ public class PlayerTest {
         assertThat(enemiesPerTurn[2]).isEqualTo(-5);
         assertThat(enemiesPerTurn[3]).isEqualTo(-7);
         assertThat(enemiesPerTurn[4]).isEqualTo(1);
-        assertThat(enemiesPerTurn[5]).isEqualTo(-1);
-        assertThat(enemiesPerTurn[6]).isEqualTo(-3);
+        assertThat(enemiesPerTurn[5]).isEqualTo(3);
+        assertThat(enemiesPerTurn[6]).isEqualTo(5);
     }
 
     @Test
-    public void shouldCalculateTheCorrectNumberOfTroopsInNeutralFactory() {
+    public void shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfIConquerIt() {
         auxiliary.setFactory(0,0,10,2,0);
         auxiliary.setTroop(1, 5,0, 10, 5);
         auxiliary.setTroop(1, 5,0, 15, 3);
@@ -85,11 +85,62 @@ public class PlayerTest {
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(-10);
         assertThat(enemiesPerTurn[1]).isEqualTo(-6);
+        assertThat(enemiesPerTurn[2]).isEqualTo(9);
+        assertThat(enemiesPerTurn[3]).isEqualTo(11);
+        assertThat(enemiesPerTurn[4]).isEqualTo(23);
+        assertThat(enemiesPerTurn[5]).isEqualTo(25);
+        assertThat(enemiesPerTurn[6]).isEqualTo(27);
+    }
+
+    @Test
+    public void shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfIConquerItAndEnemyReconquersIt() {
+        auxiliary.setFactory(0,0,10,2,0);
+        auxiliary.setTroop(-1, 5,0, 14, 5);
+        auxiliary.setTroop(1, 5,0, 15, 3);
+        auxiliary.setTroop(-1, 5,0, 4, 2);
+        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
+        assertThat(enemiesPerTurn[0]).isEqualTo(-10);
+        assertThat(enemiesPerTurn[1]).isEqualTo(-6);
+        assertThat(enemiesPerTurn[2]).isEqualTo(9);
+        assertThat(enemiesPerTurn[3]).isEqualTo(11);
+        assertThat(enemiesPerTurn[4]).isEqualTo(-1);
+        assertThat(enemiesPerTurn[5]).isEqualTo(-3);
+        assertThat(enemiesPerTurn[6]).isEqualTo(-5);
+    }
+
+    @Test
+    public void shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfEnemyConquerIt() {
+        auxiliary.setFactory(0,0,10,2,0);
+        auxiliary.setTroop(-1, 5,0, 10, 5);
+        auxiliary.setTroop(-1, 5,0, 15, 3);
+        auxiliary.setTroop(1, 5,0, 4, 2);
+        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
+        assertThat(enemiesPerTurn[0]).isEqualTo(-10);
+        assertThat(enemiesPerTurn[1]).isEqualTo(-6);
         assertThat(enemiesPerTurn[2]).isEqualTo(-9);
-        assertThat(enemiesPerTurn[3]).isEqualTo(-9);
-        assertThat(enemiesPerTurn[4]).isEqualTo(-19);
-        assertThat(enemiesPerTurn[5]).isEqualTo(-19);
-        assertThat(enemiesPerTurn[6]).isEqualTo(-19);
+        assertThat(enemiesPerTurn[3]).isEqualTo(-11);
+        assertThat(enemiesPerTurn[4]).isEqualTo(-23);
+        assertThat(enemiesPerTurn[5]).isEqualTo(-25);
+        assertThat(enemiesPerTurn[6]).isEqualTo(-27);
+    }
+
+    @Test
+    public void shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfEnemyConquerItAndIReconquerIt() {
+        auxiliary.setFactory(0,0,10,2,0);
+        auxiliary.setTroop(1, 5,0, 14, 5);
+        auxiliary.setTroop(-1, 5,0, 15, 3);
+        auxiliary.setTroop(1, 5,0, 4, 2);
+        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
+        assertThat(enemiesPerTurn[0]).isEqualTo(-10);
+        assertThat(enemiesPerTurn[1]).isEqualTo(-6);
+        assertThat(enemiesPerTurn[2]).isEqualTo(-9);
+        assertThat(enemiesPerTurn[3]).isEqualTo(-11);
+        assertThat(enemiesPerTurn[4]).isEqualTo(1);
+        assertThat(enemiesPerTurn[5]).isEqualTo(3);
+        assertThat(enemiesPerTurn[6]).isEqualTo(5);
     }
 
     @Test
