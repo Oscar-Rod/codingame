@@ -237,15 +237,11 @@ public class PlayerTest {
         Factory myFactoryInDanger = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
         Factory myFactoryToSendTroops = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 1).findFirst().get();
         engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactoryInDanger);
-        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactoryInDanger);
-        int troopsNeeded = engine.getNumberOfTroopsINeedToDefendMyFactory(myFactoryInDanger, enemiesPerTurn);
         engine.defendMyFactories(myFactoryToSendTroops, 2);
         assertThat(myFactoryInDanger.isInDanger()).isTrue();
         assertThat(myFactoryInDanger.getNumberOfTroopsIncoming()).isEqualTo(1);
-        assertThat(troopsNeeded).isEqualTo(-1);
         assertThat(myFactoryInDanger.getNumberOfTurnsUntilArrival()).isEqualTo(15);
         assertThat(myFactoryToSendTroops.getCyborgs()).isEqualTo(9);
-        assertThat(myFactoryToSendTroops.getCyborgs()).isEqualTo(10 - Math.abs(troopsNeeded));
         assertThat(engine.actions).contains("MOVE 1 0 1");
     }
 
@@ -259,12 +255,9 @@ public class PlayerTest {
         Factory myFactoryInDanger = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
         Factory myFactoryToSendTroops = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 1).findFirst().get();
         engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactoryInDanger);
-        int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactoryInDanger);
-        int troopsNeeded = engine.getNumberOfTroopsINeedToDefendMyFactory(myFactoryInDanger, enemiesPerTurn);
         engine.defendMyFactories(myFactoryToSendTroops, 2);
         assertThat(myFactoryInDanger.isInDanger()).isTrue();
         assertThat(myFactoryInDanger.getNumberOfTroopsIncoming()).isEqualTo(1);
-        assertThat(troopsNeeded).isEqualTo(-1);
         assertThat(myFactoryInDanger.getNumberOfTurnsUntilArrival()).isEqualTo(5);
         assertThat(myFactoryToSendTroops.getCyborgs()).isEqualTo(10);
         assertThat(engine.actions).isEmpty();

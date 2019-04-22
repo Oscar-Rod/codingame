@@ -167,6 +167,7 @@ class GameEngine {
         for (int i = 0; i < 20; i++) {
             if (foreseenNumberOfTroopsInTheFactory[i] < numberOfTroopsINeedToDefendMyFactory)
                 numberOfTroopsINeedToDefendMyFactory = foreseenNumberOfTroopsInTheFactory[i];
+            if (numberOfTroopsINeedToDefendMyFactory < 0) break;
         }
         return numberOfTroopsINeedToDefendMyFactory;
     }
