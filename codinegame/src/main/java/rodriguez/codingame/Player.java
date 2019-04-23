@@ -2,6 +2,7 @@ package rodriguez.codingame;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -35,7 +36,7 @@ class Player {
         while (true) {
             troops.resetList();
             factories.resetList();
-            bombs.resetList();
+            bombs.resetTemporaryBombList();
             int entityCount = in.nextInt(); // the number of entities (e.g. factories and troops)
             for (int i = 0; i < entityCount; i++) {
                 int entityId = in.nextInt();
@@ -62,14 +63,10 @@ class Player {
                     troop.setTimeToObjective(arg5);
                     troops.setTroop(troop);
                 } else if (entityType.equals("BOMB")) {
-                    Bomb bomb = new Bomb();
-                    bomb.setOwner(arg1);
-                    bomb.setOrigin(arg2);
-                    bomb.setTarget(arg3);
-                    bomb.setTimeToObjective(arg4);
-                    bombs.setBomb(bomb);
+                    bombs.addBomb(entityId, arg1, arg2, arg3, arg4);
                 }
             }
+            bombs.updateListOfBombs();
             engine.move();
             // To debug: System.err.println("Debug messages...");
 
@@ -125,13 +122,13 @@ class GameEngine {
             defendMyFactories(myFactory, 2);
             upgradeMyFactory(myFactory);
             defendMyFactories(myFactory, 1);
-            defendMyFactories(myFactory, 0);
             attackEnemyFactories(myFactory, 3);
             attackEnemyFactories(myFactory, 2);
             attackNeutralFactories(myFactory, 3);
             attackNeutralFactories(myFactory, 2);
             attackEnemyFactories(myFactory, 1);
             attackNeutralFactories(myFactory, 1);
+            avoidEnemyBomb(myFactory);
         }
         executeActions();
     }
@@ -234,7 +231,7 @@ class GameEngine {
                 } else {
                     totalTroopsArrivedUntilEachTurn[i] = target.getProduction() * target.getOwner() + myTroopsArrivingEachTurnToTarget[i] + enemyTroopsArrivingEachTurnToTarget[i] + totalTroopsArrivedUntilEachTurn[i - 1];
                     int signOfTroops = Integer.signum(totalTroopsArrivedUntilEachTurn[i]);
-                    if (target.getOwner() != signOfTroops){
+                    if (target.getOwner() != signOfTroops) {
                         target.setOwner(target.getOwner() * -1);
                     }
                 }
@@ -279,12 +276,17 @@ class GameEngine {
         int distanceBetweenFactories = map.getDistance(myFactory.getId(), target.getId());
         int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(target);
         for (int i = distanceBetweenFactories; i < 20; i++) {
-            if (numberOfTroopsINeedToConquerTheFactory > 0 && foreseenNumberOfTroopsInTheFactory[i] < 0) numberOfTroopsINeedToConquerTheFactory = Integer.MIN_VALUE;
+            if (numberOfTroopsINeedToConquerTheFactory > 0 && foreseenNumberOfTroopsInTheFactory[i] < 0)
+                numberOfTroopsINeedToConquerTheFactory = Integer.MIN_VALUE;
             if (foreseenNumberOfTroopsInTheFactory[i] > numberOfTroopsINeedToConquerTheFactory)
                 numberOfTroopsINeedToConquerTheFactory = foreseenNumberOfTroopsInTheFactory[i];
         }
         if (numberOfTroopsINeedToConquerTheFactory > 0) return 0;
         return Math.abs(numberOfTroopsINeedToConquerTheFactory) + 1;
+    }
+
+    public void avoidEnemyBomb(Factory myFactory) {
+
     }
 
     public void actionUpgrade(Factory factory) {
@@ -410,20 +412,23 @@ class TroopsList {
 }
 
 class BombsList {
-    List enemyBombs = new ArrayList<Bomb>();
-    List myBombs = new ArrayList<Bomb>();
+    List<Bomb> enemyBombs = new ArrayList<>();
+    List<Bomb> myBombs = new ArrayList<>();
+    List<Bomb> temporaryBombs = new ArrayList<>();
 
     public BombsList() {
     }
 
-    public void resetList() {
+    public void resetEnemyBombList() {
         enemyBombs.clear();
+    }
+
+    public void resetMyBombList() {
         myBombs.clear();
     }
 
-    public void setBomb(Bomb bomb) {
-        if (bomb.getOwner() == 1) myBombs.add(bomb);
-        else enemyBombs.add(bomb);
+    public void resetTemporaryBombList() {
+        temporaryBombs.clear();
     }
 
     public List<Bomb> getEnemyBombs() {
@@ -434,8 +439,39 @@ class BombsList {
         return myBombs;
     }
 
-    public boolean factoryIsOBjective(Factory factory) {
-        return true;//Iterate over bombs to find if factory is an objective and dont sent more troops to an objective
+    public void addBomb(int id, int owner, int origin, int target, int timeToObjective) {
+        System.err.println("BOMB ID: " + id);
+        Bomb bomb = new Bomb();
+        bomb.setId(id);
+        bomb.setOwner(owner);
+        bomb.setOrigin(origin);
+        bomb.setTarget(target);
+        bomb.setTimeToObjective(timeToObjective);
+        bomb.setTurnsSinceLaunching(0);
+        temporaryBombs.add(bomb);
+    }
+
+    public void updateListOfBombs() {
+        List<Bomb> auxiliaryEnemyBombs = new ArrayList<>(enemyBombs);
+        List<Bomb> auxiliaryMyBombs = new ArrayList<>(myBombs);
+        for (Bomb bomb : auxiliaryEnemyBombs) {
+            Optional optionalBomb = temporaryBombs.stream().filter(b ->  b.getId() == bomb.getId()).findFirst();
+            if (optionalBomb.isPresent()) {
+                bomb.setTurnsSinceLaunching(bomb.getTurnsSinceLaunching() + 1);
+                temporaryBombs.remove(optionalBomb.get());
+            } else enemyBombs.remove(bomb);
+        }
+        for (Bomb bomb : auxiliaryMyBombs) {
+            Optional optionalBomb = temporaryBombs.stream().filter(b ->  b.getId() == bomb.getId()).findFirst();
+            if (optionalBomb.isPresent()) {
+                bomb.setTurnsSinceLaunching(bomb.getTurnsSinceLaunching() + 1);
+                temporaryBombs.remove(optionalBomb.get());
+            } else enemyBombs.remove(bomb);
+        }
+        for (Bomb bomb : temporaryBombs) {
+            if (bomb.getOwner() == -1) enemyBombs.add(bomb);
+            else myBombs.add(bomb);
+        }
     }
 }
 
@@ -583,15 +619,21 @@ class Troop {
 
 class Bomb {
 
+    private int id;
     private int owner;
     private int origin;
     private int target;
     private int timeToObjective;
+    private int turnsSinceLaunching;
 
     public Bomb() {
     }
 
     ;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setOwner(int owner) {
         this.owner = owner;
@@ -609,6 +651,14 @@ class Bomb {
         this.timeToObjective = timeToObjective;
     }
 
+    public void setTurnsSinceLaunching(int turnsSinceLaunching) {
+        this.turnsSinceLaunching = turnsSinceLaunching;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public int getOwner() {
         return owner;
     }
@@ -623,5 +673,9 @@ class Bomb {
 
     public int getTimeToObjective() {
         return timeToObjective;
+    }
+
+    public int getTurnsSinceLaunching() {
+        return turnsSinceLaunching;
     }
 }

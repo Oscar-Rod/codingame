@@ -4,6 +4,8 @@ package rodriguez.codingame;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PlayerTest {
@@ -408,5 +410,39 @@ public class PlayerTest {
 
         int numberOfTroopsINeedToConquerTheFactory = engine.getNumberOfTroopsINeedToConquerTheFactory(myFactory, neutralFactory);
         assertThat(numberOfTroopsINeedToConquerTheFactory).isEqualTo(4);
+    }
+
+    @Test
+    public void shouldAddBothBombs() {
+        engine.bombs.addBomb(0, -1, 5, -1, -1);
+        engine.bombs.addBomb(1, -1, 5, -1, -1);
+        engine.bombs.updateListOfBombs();
+        List<Bomb> enemyBombs = engine.bombs.getEnemyBombs();
+        assertThat(enemyBombs.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void shouldRemoveBothBombs() {
+        engine.bombs.addBomb(0, -1, 5, -1, -1);
+        engine.bombs.addBomb(1, -1, 5, -1, -1);
+        engine.bombs.updateListOfBombs();
+        engine.bombs.resetTemporaryBombList();
+        engine.bombs.updateListOfBombs();
+        List<Bomb> enemyBombs = engine.bombs.getEnemyBombs();
+        assertThat(enemyBombs.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldRemoveOneBombsAndUpdateTheOther() {
+        engine.bombs.addBomb(0, -1, 5, -1, -1);
+        engine.bombs.addBomb(1, -1, 5, -1, -1);
+        engine.bombs.updateListOfBombs();
+        engine.bombs.resetTemporaryBombList();
+        engine.bombs.addBomb(0, -1, 5, -1, -1);
+        engine.bombs.updateListOfBombs();
+        List<Bomb> enemyBombs = engine.bombs.getEnemyBombs();
+        Bomb bomb = enemyBombs.stream().filter(b -> b.getId() == 0).findFirst().get();
+        assertThat(enemyBombs.size()).isEqualTo(1);
+        assertThat(bomb.getTurnsSinceLaunching()).isEqualTo(1);
     }
 }

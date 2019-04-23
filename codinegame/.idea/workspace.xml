@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0d2c5d18-b5d0-4792-bcc9-b4492d96e4a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -23,11 +24,23 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="268" column="67" lean-forward="true" selection-start-line="268" selection-start-column="67" selection-end-line="268" selection-end-column="67" />
+            <state relative-caret-position="315">
+              <caret line="461" column="61" selection-start-line="461" selection-start-column="61" selection-end-line="461" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#13911#13912#0" expanded="true" />
+                <element signature="e#14119#14120#0" expanded="true" />
+                <element signature="e#16535#16536#0" expanded="true" />
+                <element signature="e#16569#16570#0" expanded="true" />
+                <element signature="e#16608#16609#0" expanded="true" />
+                <element signature="e#16639#16640#0" expanded="true" />
+                <element signature="e#16899#16900#0" expanded="true" />
+                <element signature="e#16928#16929#0" expanded="true" />
+                <element signature="e#17140#17141#0" expanded="true" />
+                <element signature="e#17208#17209#0" expanded="true" />
+                <element signature="e#21528#21529#0" expanded="true" />
+                <element signature="e#21590#21591#0" expanded="true" />
+                <element signature="e#21936#21937#0" expanded="true" />
+                <element signature="e#21978#21979#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -36,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4695">
-              <caret line="313" column="36" selection-start-line="313" selection-start-column="36" selection-end-line="313" selection-end-column="36" />
+            <state relative-caret-position="591">
+              <caret line="431" column="49" selection-start-line="431" selection-start-column="49" selection-end-line="431" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#265#266#0" expanded="true" />
@@ -192,7 +205,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PlayerTest">
+  <component name="RunManager" selected="JUnit.PlayerTest.shouldRemoveOneBombsAndUpdateTheOther">
     <configuration name="PlayerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="codingame" />
       <extension name="coverage">
@@ -208,7 +221,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PlayerTest.shouldCalculateForEnemyFactory" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PlayerTest.shouldAddBothBombs" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="codingame" />
       <extension name="coverage">
         <pattern>
@@ -218,7 +231,39 @@
       </extension>
       <option name="PACKAGE_NAME" value="rodriguez.codingame" />
       <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
-      <option name="METHOD_NAME" value="shouldCalculateForEnemyFactory" />
+      <option name="METHOD_NAME" value="shouldAddBothBombs" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerTest.shouldRemoveBothBombs" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="codingame" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="rodriguez.codingame.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="rodriguez.codingame" />
+      <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
+      <option name="METHOD_NAME" value="shouldRemoveBothBombs" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PlayerTest.shouldRemoveOneBombsAndUpdateTheOther" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="codingame" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="rodriguez.codingame.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="rodriguez.codingame" />
+      <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
+      <option name="METHOD_NAME" value="shouldRemoveOneBombsAndUpdateTheOther" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -240,45 +285,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PlayerTest.shouldReturnFive" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="codingame" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="rodriguez.codingame.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="rodriguez.codingame" />
-      <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
-      <option name="METHOD_NAME" value="shouldReturnFive" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PlayerTest.shouldReturnTwo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="codingame" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="rodriguez.codingame.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="rodriguez.codingame" />
-      <option name="MAIN_CLASS_NAME" value="rodriguez.codingame.PlayerTest" />
-      <option name="METHOD_NAME" value="shouldReturnTwo" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PlayerTest.shouldRemoveOneBombsAndUpdateTheOther" />
+        <item itemvalue="JUnit.PlayerTest.shouldRemoveBothBombs" />
+        <item itemvalue="JUnit.PlayerTest.shouldAddBothBombs" />
         <item itemvalue="JUnit.PlayerTest" />
         <item itemvalue="JUnit.PlayerTest.shouldReturn4" />
-        <item itemvalue="JUnit.PlayerTest.shouldReturnFive" />
-        <item itemvalue="JUnit.PlayerTest.shouldCalculateForEnemyFactory" />
-        <item itemvalue="JUnit.PlayerTest.shouldReturnTwo" />
       </list>
     </recent_temporary>
   </component>
@@ -296,15 +309,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="PlayerTest_shouldReturnTwo - 2019.04.22 at 10h 21m 01s.xml">
-      <configuration name="PlayerTest.shouldReturnTwo" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest_shouldCalculateForEnemyFactory - 2019.04.22 at 10h 21m 38s.xml">
-      <configuration name="PlayerTest.shouldCalculateForEnemyFactory" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PlayerTest - 2019.04.22 at 10h 46m 33s.xml">
-      <configuration name="PlayerTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="PlayerTest - 2019.04.22 at 11h 01m 32s.xml">
       <configuration name="PlayerTest" configurationId="JUnit" />
     </history-entry>
@@ -326,6 +330,15 @@
     <history-entry file="PlayerTest - 2019.04.22 at 11h 26m 11s.xml">
       <configuration name="PlayerTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="PlayerTest_shouldAddBothBombs - 2019.04.23 at 08h 42m 41s.xml">
+      <configuration name="PlayerTest.shouldAddBothBombs" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest_shouldRemoveBothBombs - 2019.04.23 at 08h 43m 48s.xml">
+      <configuration name="PlayerTest.shouldRemoveBothBombs" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PlayerTest_shouldRemoveBothBombs - 2019.04.23 at 08h 46m 22s.xml">
+      <configuration name="PlayerTest.shouldRemoveBothBombs" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="31" width="2564" height="1273" extended-state="6" />
@@ -340,12 +353,12 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32955536" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3365301" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3897123" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3365301" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3897123" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3504795" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.19093287" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32868353" />
@@ -359,6 +372,18 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java</url>
+          <line>462</line>
+          <properties />
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/codinegame$PlayerTest_shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfEnemyConquerIt.ic" NAME="PlayerTest.shouldCalculateTheCorrectNumberOfTroopsInNeutralFactoryIfEnemyConquerIt Coverage Results" MODIFIED="1555920376196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
@@ -407,8 +432,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/rodriguez/codingame/PlayerTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4695">
-          <caret line="313" column="36" selection-start-line="313" selection-start-column="36" selection-end-line="313" selection-end-column="36" />
+        <state relative-caret-position="591">
+          <caret line="431" column="49" selection-start-line="431" selection-start-column="49" selection-end-line="431" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#265#266#0" expanded="true" />
@@ -419,11 +444,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/rodriguez/codingame/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="268" column="67" lean-forward="true" selection-start-line="268" selection-start-column="67" selection-end-line="268" selection-end-column="67" />
+        <state relative-caret-position="315">
+          <caret line="461" column="61" selection-start-line="461" selection-start-column="61" selection-end-line="461" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#13911#13912#0" expanded="true" />
+            <element signature="e#14119#14120#0" expanded="true" />
+            <element signature="e#16535#16536#0" expanded="true" />
+            <element signature="e#16569#16570#0" expanded="true" />
+            <element signature="e#16608#16609#0" expanded="true" />
+            <element signature="e#16639#16640#0" expanded="true" />
+            <element signature="e#16899#16900#0" expanded="true" />
+            <element signature="e#16928#16929#0" expanded="true" />
+            <element signature="e#17140#17141#0" expanded="true" />
+            <element signature="e#17208#17209#0" expanded="true" />
+            <element signature="e#21528#21529#0" expanded="true" />
+            <element signature="e#21590#21591#0" expanded="true" />
+            <element signature="e#21936#21937#0" expanded="true" />
+            <element signature="e#21978#21979#0" expanded="true" />
           </folding>
         </state>
       </provider>
