@@ -21,7 +21,7 @@ public class PlayerTest {
     @Test
     public void shouldUpgradeTheFactory() {
         auxiliary.setFactory(0,1,10,2,0);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getAllMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int numberOfCyborgs = myFactory.getCyborgs();
         engine.upgradeMyFactory(myFactory);
         int numberOfCyborgsAfterUpgrade = myFactory.getCyborgs();
@@ -33,7 +33,7 @@ public class PlayerTest {
     @Test
     public void shouldNOTUpgradeTheFactory() {
         auxiliary.setFactory(0,1,10,2,0);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         myFactory.setCyborgs(9);
         int numberOfCyborgs = myFactory.getCyborgs();
         engine.upgradeMyFactory(myFactory);
@@ -49,7 +49,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 10, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(12);
         assertThat(enemiesPerTurn[1]).isEqualTo(18);
@@ -66,7 +66,7 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 10, 5);
         auxiliary.setTroop(1, 5,0, 15, 3);
         auxiliary.setTroop(-1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getAllEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(-12);
         assertThat(enemiesPerTurn[1]).isEqualTo(-18);
@@ -86,7 +86,7 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 8, 5);
         auxiliary.setTroop(1, 5,0, 15, 11);
         auxiliary.setTroop(-1, 5,0, 11, 15);
-        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory enemyFactory = engine.factories.getAllEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(enemyFactory);
         // -12, -18, -5, -7, -1, -3, -5, -7, -9, -11, 2, 4, 6, 8, -1, -3, -5, -7....
         assertThat(enemiesPerTurn[0]).isEqualTo(-12);
@@ -115,7 +115,7 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 10, 5);
         auxiliary.setTroop(1, 5,0, 15, 3);
         auxiliary.setTroop(-1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactory = engine.factories.getNeutralFactoriesOfLevel(2).stream().filter(f -> f.getId() == 0).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(-10);
         assertThat(enemiesPerTurn[1]).isEqualTo(-6);
@@ -132,7 +132,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 14, 5);
         auxiliary.setTroop(1, 5,0, 15, 3);
         auxiliary.setTroop(-1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactory = engine.factories.getNeutralFactoriesOfLevel(2).stream().filter(f -> f.getId() == 0).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(-10);
         assertThat(enemiesPerTurn[1]).isEqualTo(-6);
@@ -149,7 +149,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 10, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactory = engine.factories.getNeutralFactoriesOfLevel(2).stream().filter(f -> f.getId() == 0).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(-10);
         assertThat(enemiesPerTurn[1]).isEqualTo(-6);
@@ -166,7 +166,7 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 14, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactory = engine.factories.getNeutralFactoriesOfLevel(2).stream().filter(f -> f.getId() == 0).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(-10);
         assertThat(enemiesPerTurn[1]).isEqualTo(-6);
@@ -183,7 +183,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 8, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(12);
         assertThat(enemiesPerTurn[1]).isEqualTo(18);
@@ -200,7 +200,7 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 8, 5);
         auxiliary.setTroop(1, 5,0, 15, 3);
         auxiliary.setTroop(-1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getEnemyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == -1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         assertThat(enemiesPerTurn[0]).isEqualTo(-12);
         assertThat(enemiesPerTurn[1]).isEqualTo(-18);
@@ -217,7 +217,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 10, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         int troopsNeeded = engine.getNumberOfTroopsINeedToDefendMyFactory(myFactory, enemiesPerTurn);
         assertThat(troopsNeeded).isEqualTo(-1);
@@ -230,7 +230,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 8, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         int troopsNeeded = engine.getNumberOfTroopsINeedToDefendMyFactory(myFactory, enemiesPerTurn);
         assertThat(troopsNeeded).isEqualTo(1);
@@ -242,7 +242,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 10, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactory);
         assertThat(myFactory.isInDanger()).isTrue();
         assertThat(myFactory.getNumberOfTroopsIncoming()).isEqualTo(1);
@@ -255,7 +255,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 8, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactory);
 
         assertThat(myFactory.isInDanger()).isFalse();
@@ -268,8 +268,8 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 30, 15);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactoryInDanger = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
-        Factory myFactoryToSendTroops = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 1).findFirst().get();
+        Factory myFactoryInDanger = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactoryToSendTroops = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getId() == 1).findFirst().get();
         engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactoryInDanger);
         engine.defendMyFactories(myFactoryToSendTroops, 2);
         assertThat(myFactoryInDanger.isInDanger()).isTrue();
@@ -286,8 +286,8 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 10, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactoryInDanger = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
-        Factory myFactoryToSendTroops = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 1).findFirst().get();
+        Factory myFactoryInDanger = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactoryToSendTroops = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getId() == 1).findFirst().get();
         engine.setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactoryInDanger);
         engine.defendMyFactories(myFactoryToSendTroops, 2);
         assertThat(myFactoryInDanger.isInDanger()).isTrue();
@@ -303,7 +303,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 10, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         int[] firstReinforcementNeededAndTurnsUntilAttack = engine.findFirstReinforcementNeededAndTurnsUntilAttack(enemiesPerTurn);
         assertThat(firstReinforcementNeededAndTurnsUntilAttack[0]).isEqualTo(-1);
@@ -316,7 +316,7 @@ public class PlayerTest {
         auxiliary.setTroop(-1, 5,0, 8, 5);
         auxiliary.setTroop(-1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 4, 2);
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int[] enemiesPerTurn = engine.calculateForeseenNumberOfTroopsInTheFactory(myFactory);
         int[] firstReinforcementNeededAndTurnsUntilAttack = engine.findFirstReinforcementNeededAndTurnsUntilAttack(enemiesPerTurn);
         assertThat(firstReinforcementNeededAndTurnsUntilAttack[0]).isEqualTo(0);
@@ -330,8 +330,8 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 10, 5);
         auxiliary.setTroop(1, 5,0, 15, 3);
         auxiliary.setTroop(-1, 5,0, 4, 2);
-        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory enemyFactory = engine.factories.getEnemyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int numberOfTroopsINeedToConquerTheFactory = engine.getNumberOfTroopsINeedToConquerTheFactory(myFactory, enemyFactory);
         // -12, -18, -5, -7, 1, 3, 5
         assertThat(numberOfTroopsINeedToConquerTheFactory).isEqualTo(0);
@@ -346,8 +346,8 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 8, 5);
         auxiliary.setTroop(1, 5,0, 15, 3);
         auxiliary.setTroop(-1, 5,0, 4, 2);
-        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory enemyFactory = engine.factories.getEnemyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int numberOfTroopsINeedToConquerTheFactory = engine.getNumberOfTroopsINeedToConquerTheFactory(myFactory, enemyFactory);
         // -12, -18, -5, -7, -1, -3, -5, -7, -9, -11, -13...
         assertThat(numberOfTroopsINeedToConquerTheFactory).isEqualTo(14);
@@ -361,8 +361,8 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 12, 3);
         auxiliary.setTroop(1, 5,0, 8, 5);
         auxiliary.setTroop(-1, 5,0, 9, 7);
-        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory enemyFactory = engine.factories.getEnemyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int numberOfTroopsINeedToConquerTheFactory = engine.getNumberOfTroopsINeedToConquerTheFactory(myFactory, enemyFactory);
         // -12, -10, 0, -2, 4, 6, -1, -3, -5, -7, -9...
         assertThat(numberOfTroopsINeedToConquerTheFactory).isEqualTo(10);
@@ -376,8 +376,8 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 15, 3);
         auxiliary.setTroop(1, 5,0, 15, 11);
         auxiliary.setTroop(-1, 5,0, 4, 2);
-        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory enemyFactory = engine.factories.getEnemyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int numberOfTroopsINeedToConquerTheFactory = engine.getNumberOfTroopsINeedToConquerTheFactory(myFactory, enemyFactory);
         // -12, -18, -5, -7, -1, -3, -5, -7, -9, -11, 2...
         assertThat(numberOfTroopsINeedToConquerTheFactory).isEqualTo(0);
@@ -392,8 +392,8 @@ public class PlayerTest {
         auxiliary.setTroop(1, 5,0, 8, 5);
         auxiliary.setTroop(1, 5,0, 15, 11);
         auxiliary.setTroop(-1, 5,0, 11, 15);
-        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory enemyFactory = engine.factories.getEnemyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(2).stream().filter(f -> f.getOwner() == 1).findFirst().get();
         int numberOfTroopsINeedToConquerTheFactory = engine.getNumberOfTroopsINeedToConquerTheFactory(myFactory, enemyFactory);
         // -12, -18, -5, -7, -1, -3, -5, -7, -9, -11, 2, 4, 6, 8, -1, -3, -5, -7....
         assertThat(numberOfTroopsINeedToConquerTheFactory).isEqualTo(2);
@@ -404,8 +404,8 @@ public class PlayerTest {
         auxiliary.setFactory(0, 0, 3, 2, 0);
         auxiliary.setFactory(1, 1, 4, 3, 0);
         auxiliary.setTroop(-1, 5, 0, 4, 3);
-        Factory neutralFactory = engine.factories.getNeutralFactories().stream().filter(f -> f.getId() == 0).findFirst().get();
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getId() == 1).findFirst().get();
+        Factory neutralFactory = engine.factories.getNeutralFactoriesOfLevel(2).stream().filter(f -> f.getId() == 0).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactoriesOfLevel(3).stream().filter(f -> f.getId() == 1).findFirst().get();
         auxiliary.setDistance(myFactory, neutralFactory, 3);
 
         int numberOfTroopsINeedToConquerTheFactory = engine.getNumberOfTroopsINeedToConquerTheFactory(myFactory, neutralFactory);
@@ -451,8 +451,8 @@ public class PlayerTest {
         auxiliary.setFactory(0, 1, 5, 0, 0);
         auxiliary.setFactory(2, 1, 5, 0, 0);
         auxiliary.setFactory(1, -1, 4, 3, 0);
-        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
-        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        Factory enemyFactory = engine.factories.getAllEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getAllMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
         auxiliary.setDistance(enemyFactory, myFactory, 2);
         engine.bombs.addBomb(0, -1, 1, -1, -1);
         engine.bombs.updateListOfBombs();

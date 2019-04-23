@@ -1,9 +1,6 @@
 package rodriguez.codingame;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Auto-generated code below aims at helping you parse
@@ -34,6 +31,9 @@ class Player {
 
         // game loop
         while (true) {
+
+            long startTime = System.currentTimeMillis();
+
             troops.resetList();
             factories.resetList();
             bombs.resetTemporaryBombList();
@@ -65,13 +65,21 @@ class Player {
                 } else if (entityType.equals("BOMB")) {
                     bombs.addBomb(entityId, arg1, arg2, arg3, arg4);
                     if (arg1 == 1) {
-                        factories.getMyFactories().stream().filter(f -> f.getId() == arg3).findFirst().ifPresent(Factory::setAsBeingBobardedByMe);
-                        factories.getEnemyFactories().stream().filter(f -> f.getId() == arg3).findFirst().ifPresent(Factory::setAsBeingBobardedByMe);
+                        factories.getAllMyFactories().stream().filter(f -> f.getId() == arg3).findFirst().ifPresent(Factory::setAsBeingBobardedByMe);
+                        factories.getAllEnemyFactories().stream().filter(f -> f.getId() == arg3).findFirst().ifPresent(Factory::setAsBeingBobardedByMe);
                     }
                 }
             }
             bombs.updateListOfBombs();
+
+            long midTime = System.currentTimeMillis();
+
             engine.move();
+
+            long endTime = System.currentTimeMillis();
+
+            System.err.println("TOTAL TIME " + (endTime - startTime));
+            System.err.println("PREPROCESSING TIME " + (midTime - startTime));
             // To debug: System.err.println("Debug messages...");
 
         }
@@ -119,7 +127,9 @@ class GameEngine {
         myFactoriesInDanger[2].clear();
         myFactoriesInDanger[3].clear();
 
-        for (Factory myFactory : factories.getMyFactories()) {
+        long startTime = System.currentTimeMillis();
+
+        for (Factory myFactory : factories.getAllMyFactories()) {
             //TODO: Need a system to prioritise attacking nearer factories
             setNumberOfCyborgsToTheMaximumItIsSafeToSpend(myFactory);
             if (myFactory.isInDanger()) continue;
@@ -138,7 +148,15 @@ class GameEngine {
                 sendMyBomb();
             }
         }
+
+        long midTime = System.currentTimeMillis();
+
         executeActions();
+
+        long endTime = System.currentTimeMillis();
+
+        System.err.println("CALCULATIONS TIME " + (midTime - startTime));
+        System.err.println("EXECUTION TIME " + (endTime - midTime));
     }
 
     private void sendMyBomb() {
@@ -153,8 +171,8 @@ class GameEngine {
 
     private List<Factory> findEnemyLevelThreeFactories() {
         List<Factory> possibleTargets = new ArrayList<>();
-        for (Factory factory : factories.getEnemyFactories()) {
-            if (factory.getProduction() == 3 && !factory.isBeingBombardedByMe() && factory.getDelay() == 0)
+        for (Factory factory : factories.getEnemyFactoriesOfLevel(3)) {
+            if (!factory.isBeingBombardedByMe() && factory.getDelay() == 0)
                 possibleTargets.add(factory);
         }
         return possibleTargets;
@@ -222,6 +240,7 @@ class GameEngine {
         //Negative number means enemy will have this number of troops in that factory at the given turn.
         //Index 0 is th next turn
         //TODO: ADD the impact of my bombs to predict more accurately the troops
+        //TODO: Save this as a field in the factory itself. Now I am calculating all of this for each of my factories, for all the enemy factories
         int[] myTroopsArrivingEachTurnToTarget = new int[20];
         int[] enemyTroopsArrivingEachTurnToTarget = new int[20];
         for (Troop troop : troops.getEnemyTroops()) {
@@ -288,15 +307,15 @@ class GameEngine {
     }
 
     public void attackNeutralFactories(Factory myFactory, int level) {
-        for (Factory neutralFactory : factories.getNeutralFactories()) {
-            if (neutralFactory.getProduction() == level && !neutralFactory.isBeingAttackedByMe())
+        for (Factory neutralFactory : factories.getNeutralFactoriesOfLevel(level)) {
+            if (!neutralFactory.isBeingAttackedByMe())
                 attackFactory(myFactory, neutralFactory);
         }
     }
 
     public void attackEnemyFactories(Factory myFactory, int level) {
-        for (Factory enemyFactory : factories.getEnemyFactories()) {
-            if (enemyFactory.getProduction() == level && !enemyFactory.isBeingAttackedByMe())
+        for (Factory enemyFactory : factories.getEnemyFactoriesOfLevel(level)) {
+            if (!enemyFactory.isBeingAttackedByMe())
                 attackFactory(myFactory, enemyFactory);
         }
     }
@@ -338,13 +357,14 @@ class GameEngine {
     private Factory findMyClosestFactory(Factory destination) {
         int distance = Integer.MAX_VALUE;
         Factory closestFactory = null;
-        for (Factory factory : factories.getMyFactories()) {
+        for (Factory factory : factories.getAllMyFactories()) {
             if (factory.getId() == destination.getId()) continue;
             int newDistance = map.getDistance(destination.getId(), factory.getId());
             if (newDistance < distance) {
                 distance = newDistance;
                 closestFactory = factory;
             }
+
         }
         return closestFactory;
     }
@@ -424,41 +444,66 @@ class FactoriesMap {
 }
 
 class FactoriesList {
-    List myFactories = new ArrayList<Factory>();
-    List enemyFactories = new ArrayList<Factory>();
-    List neutralFactories = new ArrayList<Factory>();
+    List<List<Factory>> myFactories = new ArrayList<>();
+    List<List<Factory>> enemyFactories = new ArrayList<>();
+    List<List<Factory>> neutralFactories = new ArrayList<>();
+    List<Factory> allMyFactories = new ArrayList<>();
+    List<Factory> allEnemyFactories = new ArrayList<>();
 
     public FactoriesList() {
+        populateLists();
+    }
+
+    private void populateLists() {
+        for (int i = 0; i < 4; i++) {
+            myFactories.add(new ArrayList<>());
+        }
+        for (int i = 0; i < 4; i++) {
+            enemyFactories.add(new ArrayList<>());
+        }
+        for (int i = 0; i < 4; i++) {
+            neutralFactories.add(new ArrayList<>());
+        }
     }
 
     public void setFactory(Factory factory) {
-        if (factory.getOwner() == 1) myFactories.add(factory);
-        else if (factory.getOwner() == -1) enemyFactories.add(factory);
-        else neutralFactories.add(factory);
+        if (factory.getOwner() == 1) {
+            myFactories.get(factory.getProduction()).add(factory);
+            allMyFactories.add(factory);
+        } else if (factory.getOwner() == -1) {
+            enemyFactories.get(factory.getProduction()).add(factory);
+            allEnemyFactories.add(factory);
+        } else neutralFactories.get(factory.getProduction()).add(factory);
     }
 
     public void resetList() {
         myFactories.clear();
         neutralFactories.clear();
         enemyFactories.clear();
+        allMyFactories.clear();
+        allEnemyFactories.clear();
+        populateLists();
     }
 
-    public List<Factory> getMyFactories() {
-        return myFactories;
+    public List<Factory> getMyFactoriesOfLevel(int level) {
+        return myFactories.get(level);
     }
 
-    public List<Factory> getEnemyFactories() {
-        return enemyFactories;
+    public List<Factory> getEnemyFactoriesOfLevel(int level) {
+        return enemyFactories.get(level);
     }
 
-    public void setEnemyFactories(List<Factory> newEnemyFactories) {
-        enemyFactories = newEnemyFactories;
+    public List<Factory> getNeutralFactoriesOfLevel(int level) {
+        return neutralFactories.get(level);
     }
 
-    public List<Factory> getNeutralFactories() {
-        return neutralFactories;
+    public List<Factory> getAllMyFactories() {
+        return allMyFactories;
     }
 
+    public List<Factory> getAllEnemyFactories() {
+        return allEnemyFactories;
+    }
 }
 
 class TroopsList {
@@ -516,7 +561,6 @@ class BombsList {
     }
 
     public void addBomb(int id, int owner, int origin, int target, int timeToObjective) {
-        System.err.println("BOMB ID: " + id);
         Bomb bomb = new Bomb();
         bomb.setId(id);
         bomb.setOwner(owner);
