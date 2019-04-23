@@ -64,6 +64,10 @@ class Player {
                     troops.setTroop(troop);
                 } else if (entityType.equals("BOMB")) {
                     bombs.addBomb(entityId, arg1, arg2, arg3, arg4);
+                    if (arg1 == 1) {
+                        factories.getMyFactories().stream().filter(f -> f.getId() == arg3).findFirst().ifPresent(Factory::setAsBeingBobardedByMe);
+                        factories.getEnemyFactories().stream().filter(f -> f.getId() == arg3).findFirst().ifPresent(Factory::setAsBeingBobardedByMe);
+                    }
                 }
             }
             bombs.updateListOfBombs();
@@ -82,6 +86,7 @@ class GameEngine {
     BombsList bombs;
     List<String> actions = new ArrayList<>();
     List[] myFactoriesInDanger = new ArrayList[4];
+    int remainingNumberOfBombs = 2;
 
 
     GameEngine() {
@@ -129,8 +134,42 @@ class GameEngine {
             attackEnemyFactories(myFactory, 1);
             attackNeutralFactories(myFactory, 1);
             avoidEnemyBomb(myFactory);
+            if (remainingNumberOfBombs > 0) {
+                sendMyBomb();
+            }
         }
         executeActions();
+    }
+
+    private void sendMyBomb() {
+        List<Factory> possibleTargets = findEnemyLevelThreeFactories();
+        Factory bestTarget = findBestTarget(possibleTargets);
+        if (bestTarget != null) {
+            Factory closestFactoryToTarget = findMyClosestFactory(bestTarget);
+            remainingNumberOfBombs--;
+            actionBomb(closestFactoryToTarget, bestTarget);
+        }
+    }
+
+    private List<Factory> findEnemyLevelThreeFactories() {
+        List<Factory> possibleTargets = new ArrayList<>();
+        for (Factory factory : factories.getEnemyFactories()) {
+            if (factory.getProduction() == 3 && !factory.isBeingBombardedByMe() && factory.getDelay() == 0)
+                possibleTargets.add(factory);
+        }
+        return possibleTargets;
+    }
+
+    private Factory findBestTarget(List<Factory> possibleTargets) {
+        int numberOfTroops = Integer.MIN_VALUE;
+        Factory bestTarget = null;
+        for (Factory factory : possibleTargets) {
+            if (factory.getCyborgs() > numberOfTroops) {
+                numberOfTroops = factory.getCyborgs();
+                bestTarget = factory;
+            }
+        }
+        return bestTarget;
     }
 
     public void setNumberOfCyborgsToTheMaximumItIsSafeToSpend(Factory myFactory) {
@@ -182,6 +221,7 @@ class GameEngine {
         //Positive number means I will have this number of troops in that factory at the given turn.
         //Negative number means enemy will have this number of troops in that factory at the given turn.
         //Index 0 is th next turn
+        //TODO: ADD the impact of my bombs to predict more accurately the troops
         int[] myTroopsArrivingEachTurnToTarget = new int[20];
         int[] enemyTroopsArrivingEachTurnToTarget = new int[20];
         for (Troop troop : troops.getEnemyTroops()) {
@@ -291,17 +331,17 @@ class GameEngine {
     }
 
     private void sendAllTroopsToClosestFactory(Factory myFactory) {
-        Factory closestFactory = findClosestFactory(myFactory);
-        actionMove(myFactory, closestFactory, myFactory.getCyborgs());
+        Factory closestFactory = findMyClosestFactory(myFactory);
+        if (closestFactory != null) actionMove(myFactory, closestFactory, myFactory.getCyborgs());
     }
 
-    private Factory findClosestFactory(Factory myFactory) {
+    private Factory findMyClosestFactory(Factory destination) {
         int distance = Integer.MAX_VALUE;
         Factory closestFactory = null;
         for (Factory factory : factories.getMyFactories()) {
-            if (factory.getId() == myFactory.getId()) continue;
-            int newDistance = map.getDistance(myFactory.getId(), factory.getId());
-            if (newDistance < distance){
+            if (factory.getId() == destination.getId()) continue;
+            int newDistance = map.getDistance(destination.getId(), factory.getId());
+            if (newDistance < distance) {
                 distance = newDistance;
                 closestFactory = factory;
             }
@@ -310,7 +350,13 @@ class GameEngine {
     }
 
     private boolean canTheBombHitMyFactory(Factory myFactory) {
-        for (Bomb bomb : bombs.getEnemyBombs()){
+        for (Bomb bomb : bombs.getEnemyBombs()) {
+            int distanceTraveledByTheBomb = bomb.getTurnsSinceLaunching();
+            if (map.getDistance(myFactory.getId(), bomb.getOrigin()) == distanceTraveledByTheBomb + 1) {
+                return true;
+            }
+        }
+        for (Bomb bomb : bombs.getMyBombs()) {
             int distanceTraveledByTheBomb = bomb.getTurnsSinceLaunching();
             if (map.getDistance(myFactory.getId(), bomb.getOrigin()) == distanceTraveledByTheBomb + 1) {
                 return true;
@@ -485,14 +531,14 @@ class BombsList {
         List<Bomb> auxiliaryEnemyBombs = new ArrayList<>(enemyBombs);
         List<Bomb> auxiliaryMyBombs = new ArrayList<>(myBombs);
         for (Bomb bomb : auxiliaryEnemyBombs) {
-            Optional optionalBomb = temporaryBombs.stream().filter(b ->  b.getId() == bomb.getId()).findFirst();
+            Optional optionalBomb = temporaryBombs.stream().filter(b -> b.getId() == bomb.getId()).findFirst();
             if (optionalBomb.isPresent()) {
                 bomb.setTurnsSinceLaunching(bomb.getTurnsSinceLaunching() + 1);
                 temporaryBombs.remove(optionalBomb.get());
             } else enemyBombs.remove(bomb);
         }
         for (Bomb bomb : auxiliaryMyBombs) {
-            Optional optionalBomb = temporaryBombs.stream().filter(b ->  b.getId() == bomb.getId()).findFirst();
+            Optional optionalBomb = temporaryBombs.stream().filter(b -> b.getId() == bomb.getId()).findFirst();
             if (optionalBomb.isPresent()) {
                 bomb.setTurnsSinceLaunching(bomb.getTurnsSinceLaunching() + 1);
                 temporaryBombs.remove(optionalBomb.get());
@@ -515,6 +561,7 @@ class Factory {
     private boolean alreadyBeingAttackedByMe = false;
     private int numberOfTroopsIncoming;
     private int numberOfTurnsUntilArrival;
+    private boolean isBeingBombardedByMe = false;
 
     public Factory() {
     }
@@ -591,6 +638,14 @@ class Factory {
 
     public boolean isBeingAttackedByMe() {
         return alreadyBeingAttackedByMe;
+    }
+
+    public void setAsBeingBobardedByMe() {
+        isBeingBombardedByMe = true;
+    }
+
+    public boolean isBeingBombardedByMe() {
+        return isBeingBombardedByMe;
     }
 }
 
