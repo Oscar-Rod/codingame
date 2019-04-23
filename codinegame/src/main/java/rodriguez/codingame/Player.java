@@ -286,7 +286,37 @@ class GameEngine {
     }
 
     public void avoidEnemyBomb(Factory myFactory) {
+        boolean myFactoryIsInDanger = canTheBombHitMyFactory(myFactory);
+        if (myFactoryIsInDanger) sendAllTroopsToClosestFactory(myFactory);
+    }
 
+    private void sendAllTroopsToClosestFactory(Factory myFactory) {
+        Factory closestFactory = findClosestFactory(myFactory);
+        actionMove(myFactory, closestFactory, myFactory.getCyborgs());
+    }
+
+    private Factory findClosestFactory(Factory myFactory) {
+        int distance = Integer.MAX_VALUE;
+        Factory closestFactory = null;
+        for (Factory factory : factories.getMyFactories()) {
+            if (factory.getId() == myFactory.getId()) continue;
+            int newDistance = map.getDistance(myFactory.getId(), factory.getId());
+            if (newDistance < distance){
+                distance = newDistance;
+                closestFactory = factory;
+            }
+        }
+        return closestFactory;
+    }
+
+    private boolean canTheBombHitMyFactory(Factory myFactory) {
+        for (Bomb bomb : bombs.getEnemyBombs()){
+            int distanceTraveledByTheBomb = bomb.getTurnsSinceLaunching();
+            if (map.getDistance(myFactory.getId(), bomb.getOrigin()) == distanceTraveledByTheBomb + 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void actionUpgrade(Factory factory) {

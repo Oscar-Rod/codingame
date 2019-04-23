@@ -445,4 +445,26 @@ public class PlayerTest {
         assertThat(enemyBombs.size()).isEqualTo(1);
         assertThat(bomb.getTurnsSinceLaunching()).isEqualTo(1);
     }
+
+    @Test
+    public void shouldAvoidTheBomb() {
+        auxiliary.setFactory(0, 1, 5, 0, 0);
+        auxiliary.setFactory(2, 1, 5, 0, 0);
+        auxiliary.setFactory(1, -1, 4, 3, 0);
+        Factory enemyFactory = engine.factories.getEnemyFactories().stream().filter(f -> f.getOwner() == -1).findFirst().get();
+        Factory myFactory = engine.factories.getMyFactories().stream().filter(f -> f.getOwner() == 1).findFirst().get();
+        auxiliary.setDistance(enemyFactory, myFactory, 2);
+        engine.bombs.addBomb(0, -1, 1, -1, -1);
+        engine.bombs.updateListOfBombs();
+        engine.bombs.resetTemporaryBombList();
+
+        engine.bombs.addBomb(0, -1, 1, -1, -1);
+        engine.bombs.updateListOfBombs();
+        engine.bombs.resetTemporaryBombList();
+
+        engine.avoidEnemyBomb(myFactory);
+
+        assertThat(engine.actions).contains("MOVE 0 2 5");
+
+    }
 }
