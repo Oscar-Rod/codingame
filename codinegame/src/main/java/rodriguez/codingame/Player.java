@@ -161,16 +161,16 @@ class GameEngine {
     }
 
     private void sendMyBomb() {
-        List<Factory> possibleTargets = findEnemyLevelThreeFactories();
+        List<Factory> possibleTargets = findPossibleTargets();
         Factory bestTarget = findBestTarget(possibleTargets);
         if (bestTarget != null) {
-            Factory closestFactoryToTarget = findMyClosestFactory(bestTarget);
+            Factory closestFactoryToTarget = findMyClosestFactoryToTarget(bestTarget);
             remainingNumberOfBombs--;
             actionBomb(closestFactoryToTarget, bestTarget);
         }
     }
 
-    private List<Factory> findEnemyLevelThreeFactories() {
+    private List<Factory> findPossibleTargets() {
         List<Factory> possibleTargets = new ArrayList<>();
         for (Factory factory : factories.getEnemyFactoriesOfLevel(3)) {
             if (!factory.isBeingBombardedByMe() && factory.getDelay() == 0)
@@ -192,11 +192,12 @@ class GameEngine {
     }
 
     public void setNumberOfCyborgsToTheMaximumItIsSafeToSpend(Factory myFactory) {
-        int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(myFactory);
+        int[] predictedNumberOfTroopsInMyFactory = predictNumberOfTroopsInTheFactory(myFactory);
 
-        int numberOfTroopsINeedToDefendMyFactory = getNumberOfTroopsINeedToDefendMyFactory(myFactory, foreseenNumberOfTroopsInTheFactory);
+        int numberOfTroopsINeedToDefendMyFactory = getNumberOfTroopsINeedToDefendMyFactory(myFactory, predictedNumberOfTroopsInMyFactory);
+
         if (numberOfTroopsINeedToDefendMyFactory <= 0) { //Factory will be conquered
-            int[] numberOfTroopsAndNumberOfTurnsUntilArrival = findFirstReinforcementNeededAndTurnsUntilAttack(foreseenNumberOfTroopsInTheFactory);
+            int[] numberOfTroopsAndNumberOfTurnsUntilArrival = findFirstReinforcementNeededAndTurnsUntilAttack(predictedNumberOfTroopsInMyFactory);
             myFactory.setAsEndangered();
             myFactory.setNumberOfTroopsIncoming(Math.abs(numberOfTroopsAndNumberOfTurnsUntilArrival[0]));
             myFactory.setNumberOfTurnsUntilArrival(numberOfTroopsAndNumberOfTurnsUntilArrival[1]);
@@ -214,11 +215,11 @@ class GameEngine {
         return numberOfTroopsINeedToDefendMyFactory;
     }
 
-    public int[] findFirstReinforcementNeededAndTurnsUntilAttack(int[] foreseenNumberOfTroopsInTheFactory) {
+    public int[] findFirstReinforcementNeededAndTurnsUntilAttack(int[] predictedNumberOfTroopsInMyFactory) {
         int[] troopsAndTurn = new int[2];
         for (int i = 0; i < 20; i++) {
-            if (foreseenNumberOfTroopsInTheFactory[i] < 0) {
-                troopsAndTurn[0] = foreseenNumberOfTroopsInTheFactory[i];
+            if (predictedNumberOfTroopsInMyFactory[i] < 0) {
+                troopsAndTurn[0] = predictedNumberOfTroopsInMyFactory[i];
                 troopsAndTurn[1] = i + 1;
                 break;
             }
@@ -236,7 +237,7 @@ class GameEngine {
         }
     }
 
-    public int[] calculateForeseenNumberOfTroopsInTheFactory(Factory target) {
+    public int[] predictNumberOfTroopsInTheFactory(Factory target) {
         //Positive number means I will have this number of troops in that factory at the given turn.
         //Negative number means enemy will have this number of troops in that factory at the given turn.
         //Index 0 is th next turn
@@ -350,7 +351,7 @@ class GameEngine {
     public int getNumberOfTroopsINeedToConquerTheFactory(Factory myFactory, Factory target) {
         int numberOfTroopsINeedToConquerTheFactory = Integer.MIN_VALUE;
         int distanceBetweenFactories = map.getDistance(myFactory.getId(), target.getId());
-        int[] foreseenNumberOfTroopsInTheFactory = calculateForeseenNumberOfTroopsInTheFactory(target);
+        int[] foreseenNumberOfTroopsInTheFactory = predictNumberOfTroopsInTheFactory(target);
         for (int i = distanceBetweenFactories; i < 20; i++) {
             if (numberOfTroopsINeedToConquerTheFactory > 0 && foreseenNumberOfTroopsInTheFactory[i] < 0)
                 numberOfTroopsINeedToConquerTheFactory = Integer.MIN_VALUE;
@@ -367,11 +368,11 @@ class GameEngine {
     }
 
     private void sendAllTroopsToClosestFactory(Factory myFactory) {
-        Factory closestFactory = findMyClosestFactory(myFactory);
+        Factory closestFactory = findMyClosestFactoryToTarget(myFactory);
         if (closestFactory != null) actionMove(myFactory, closestFactory, myFactory.getCyborgs());
     }
 
-    private Factory findMyClosestFactory(Factory destination) {
+    private Factory findMyClosestFactoryToTarget(Factory destination) {
         int distance = Integer.MAX_VALUE;
         Factory closestFactory = null;
         for (Factory factory : factories.getAllMyFactories()) {
