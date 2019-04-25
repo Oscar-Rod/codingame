@@ -1,6 +1,7 @@
 package rodriguez.codingame;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Auto-generated code below aims at helping you parse
@@ -137,12 +138,12 @@ class GameEngine {
             defendMyFactories(myFactory, 2);
             upgradeMyFactory(myFactory);
             defendMyFactories(myFactory, 1);
-            attackEnemyFactories(myFactory, 3);
-            attackEnemyFactories(myFactory, 2);
-            attackNeutralFactories(myFactory, 3);
-            attackNeutralFactories(myFactory, 2);
-            attackEnemyFactories(myFactory, 1);
-            attackNeutralFactories(myFactory, 1);
+            attackFactories(myFactory, TypesOfFactories.ENEMY, 3);
+            attackFactories(myFactory, TypesOfFactories.ENEMY, 2);
+            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 3);
+            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 2);
+            attackFactories(myFactory, TypesOfFactories.ENEMY, 1);
+            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 1);
             avoidEnemyBomb(myFactory);
             if (remainingNumberOfBombs > 0) {
                 sendMyBomb();
@@ -306,28 +307,44 @@ class GameEngine {
         }
     }
 
-    public void attackNeutralFactories(Factory myFactory, int level) {
-        for (Factory neutralFactory : factories.getNeutralFactoriesOfLevel(level)) {
-            if (!neutralFactory.isBeingAttackedByMe())
-                attackFactory(myFactory, neutralFactory);
+    public void attackFactories(Factory myFactory, TypesOfFactories target, int level) {
+        List<MovementAction> possibleMovements = new ArrayList<>();
+        List<Factory> possibleTargets = target == TypesOfFactories.ENEMY ? factories.getEnemyFactoriesOfLevel(level) : factories.getNeutralFactoriesOfLevel(level);
+        for (Factory neutralFactory : possibleTargets) {
+            if (!neutralFactory.isBeingAttackedByMe()) {
+                MovementAction movementAction = attackFactory(myFactory, neutralFactory);
+                if (movementAction != null) {
+                    possibleMovements.add(movementAction);
+                }
+            }
+        }
+
+        List<MovementAction> orderedMovements = possibleMovements.stream().sorted((mv1, mv2) -> mv2.getDistanceTraveled().compareTo(mv1.getDistanceTraveled())).collect(Collectors.toList());
+        addMovements(orderedMovements);
+    }
+
+    private void addMovements(List<MovementAction> orderedMovements) {
+        for (MovementAction movement : orderedMovements) {
+            addMovement(movement);
         }
     }
 
-    public void attackEnemyFactories(Factory myFactory, int level) {
-        for (Factory enemyFactory : factories.getEnemyFactoriesOfLevel(level)) {
-            if (!enemyFactory.isBeingAttackedByMe())
-                attackFactory(myFactory, enemyFactory);
+    private void addMovement(MovementAction movement) {
+        int myTroops = movement.getMyFactory().getCyborgs();
+        int troopsNeeded = movement.getTroopsNeeded();
+        if (myTroops >= troopsNeeded) {
+            actionMove(movement.getMyFactory(), movement.getTarget(), movement.getTroopsNeeded());
+            movement.getTarget().setAsIAmAttackingIt();
         }
     }
 
-    public void attackFactory(Factory myFactory, Factory target) {
+    public MovementAction attackFactory(Factory myFactory, Factory target) {
         int numberOfTroopsINeedToConquerTheFactory = getNumberOfTroopsINeedToConquerTheFactory(myFactory, target);
-        if (numberOfTroopsINeedToConquerTheFactory == 0) return; //Factory is already being conquered
+        if (numberOfTroopsINeedToConquerTheFactory == 0) return null; //Factory is already being conquered
 
-        if (numberOfTroopsINeedToConquerTheFactory > myFactory.getCyborgs()) return;
+        if (numberOfTroopsINeedToConquerTheFactory > myFactory.getCyborgs()) return null;
 
-        actionMove(myFactory, target, numberOfTroopsINeedToConquerTheFactory);
-        target.setAsIAmAttackingIt();
+        return new MovementAction(myFactory, target, numberOfTroopsINeedToConquerTheFactory, map.getDistance(myFactory.getId(), target.getId()));
     }
 
     public int getNumberOfTroopsINeedToConquerTheFactory(Factory myFactory, Factory target) {
@@ -413,6 +430,54 @@ class GameEngine {
             System.out.println(nextMove.toString());
         }
 
+    }
+}
+
+enum TypesOfFactories {
+    MINE,
+    ENEMY,
+    NEUTRAL;
+}
+
+class MovementAction {
+    private int troopsNeeded;
+    private int distanceTraveled;
+    private int productionOfConqueredFactory;
+    private Factory myFactory;
+    private Factory target;
+    private Integer priority; //The higher, the better is to attack it
+
+    public MovementAction(Factory myFactory, Factory target, int troopsNeeded, int distanceTraveled) {
+        this.myFactory = myFactory;
+        this.target = target;
+        this.troopsNeeded = troopsNeeded;
+        this.distanceTraveled = distanceTraveled;
+        this.productionOfConqueredFactory = target.getProduction();
+        this.priority = 20 - distanceTraveled;
+    }
+
+    public Integer getPriority() {
+        return priority;
+    }
+
+    public int getTroopsNeeded() {
+        return troopsNeeded;
+    }
+
+    public Integer getDistanceTraveled() {
+        return distanceTraveled;
+    }
+
+    public int getProductionOfConqueredFactory() {
+        return productionOfConqueredFactory;
+    }
+
+    public Factory getMyFactory() {
+        return myFactory;
+    }
+
+    public Factory getTarget() {
+        return target;
     }
 }
 
