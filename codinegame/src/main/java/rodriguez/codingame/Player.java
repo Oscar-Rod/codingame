@@ -138,12 +138,13 @@ class GameEngine {
             defendMyFactories(myFactory, 2);
             upgradeMyFactory(myFactory);
             defendMyFactories(myFactory, 1);
-            attackFactories(myFactory, TypesOfFactories.ENEMY, 3);
-            attackFactories(myFactory, TypesOfFactories.ENEMY, 2);
-            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 3);
-            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 2);
-            attackFactories(myFactory, TypesOfFactories.ENEMY, 1);
-            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 1);
+            attackAllFactories(myFactory);
+//            attackFactories(myFactory, TypesOfFactories.ENEMY, 3);
+//            attackFactories(myFactory, TypesOfFactories.ENEMY, 2);
+//            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 3);
+//            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 2);
+//            attackFactories(myFactory, TypesOfFactories.ENEMY, 1);
+//            attackFactories(myFactory, TypesOfFactories.NEUTRAL, 1);
             avoidEnemyBomb(myFactory);
             if (remainingNumberOfBombs > 0) {
                 sendMyBomb();
@@ -308,12 +309,12 @@ class GameEngine {
         }
     }
 
-    public void attackFactories(Factory myFactory, TypesOfFactories target, int level) {
+    public void attackFactories(Factory myFactory, TypesOfFactories typeOfTarget, int level) {
         List<MovementAction> possibleMovements = new ArrayList<>();
-        List<Factory> possibleTargets = target == TypesOfFactories.ENEMY ? factories.getEnemyFactoriesOfLevel(level) : factories.getNeutralFactoriesOfLevel(level);
-        for (Factory neutralFactory : possibleTargets) {
-            if (!neutralFactory.isBeingAttackedByMe()) {
-                MovementAction movementAction = attackFactory(myFactory, neutralFactory);
+        List<Factory> possibleTargets = typeOfTarget == TypesOfFactories.ENEMY ? factories.getEnemyFactoriesOfLevel(level) : factories.getNeutralFactoriesOfLevel(level);
+        for (Factory target : possibleTargets) {
+            if (!target.isBeingAttackedByMe()) {
+                MovementAction movementAction = attackFactory(myFactory, target);
                 if (movementAction != null) {
                     possibleMovements.add(movementAction);
                 }
@@ -321,6 +322,23 @@ class GameEngine {
         }
 
         List<MovementAction> orderedMovements = possibleMovements.stream().sorted((mv1, mv2) -> mv1.getPriority().compareTo(mv2.getPriority())).collect(Collectors.toList());
+        addMovements(orderedMovements);
+    }
+
+    public void attackAllFactories(Factory myFactory) {
+        List<MovementAction> possibleMovements = new ArrayList<>();
+        List<Factory> possibleTargets = factories.getAllEnemyFactories();
+        possibleTargets.addAll(factories.getAllNeutralFactories());
+        for (Factory target : possibleTargets) {
+            if (!target.isBeingAttackedByMe()) {
+                MovementAction movementAction = attackFactory(myFactory, target);
+                if (movementAction != null) {
+                    possibleMovements.add(movementAction);
+                }
+            }
+        }
+
+        List<MovementAction> orderedMovements = possibleMovements.stream().sorted((mv1, mv2) -> mv2.getPriority().compareTo(mv1.getPriority())).collect(Collectors.toList());
         addMovements(orderedMovements);
     }
 
@@ -454,7 +472,15 @@ class MovementAction {
         this.troopsNeeded = troopsNeeded;
         this.distanceTraveled = distanceTraveled;
         this.productionOfConqueredFactory = target.getProduction();
-        this.priority = 20 - distanceTraveled;
+        int priority = calculatePriority();
+        this.priority = priority;
+    }
+
+    private int calculatePriority() {
+        if (productionOfConqueredFactory == 0) {
+            troopsNeeded = troopsNeeded + 10;
+        }
+        return productionOfConqueredFactory * 10 - distanceTraveled - troopsNeeded;
     }
 
     public Integer getPriority() {
@@ -515,6 +541,7 @@ class FactoriesList {
     List<List<Factory>> neutralFactories = new ArrayList<>();
     List<Factory> allMyFactories = new ArrayList<>();
     List<Factory> allEnemyFactories = new ArrayList<>();
+    List<Factory> allNeutralFactories = new ArrayList<>();
 
     public FactoriesList() {
         populateLists();
@@ -539,7 +566,10 @@ class FactoriesList {
         } else if (factory.getOwner() == -1) {
             enemyFactories.get(factory.getProduction()).add(factory);
             allEnemyFactories.add(factory);
-        } else neutralFactories.get(factory.getProduction()).add(factory);
+        } else {
+            neutralFactories.get(factory.getProduction()).add(factory);
+            allNeutralFactories.add(factory);
+        }
     }
 
     public void resetList() {
@@ -548,6 +578,7 @@ class FactoriesList {
         enemyFactories.clear();
         allMyFactories.clear();
         allEnemyFactories.clear();
+        allNeutralFactories.clear();
         populateLists();
     }
 
@@ -569,6 +600,10 @@ class FactoriesList {
 
     public List<Factory> getAllEnemyFactories() {
         return allEnemyFactories;
+    }
+
+    public List<Factory> getAllNeutralFactories() {
+        return allNeutralFactories;
     }
 }
 
@@ -652,7 +687,7 @@ class BombsList {
             if (optionalBomb.isPresent()) {
                 bomb.setTurnsSinceLaunching(bomb.getTurnsSinceLaunching() + 1);
                 temporaryBombs.remove(optionalBomb.get());
-            } else enemyBombs.remove(bomb);
+            } else myBombs.remove(bomb);
         }
         for (Bomb bomb : temporaryBombs) {
             if (bomb.getOwner() == -1) enemyBombs.add(bomb);
