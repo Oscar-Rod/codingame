@@ -320,7 +320,7 @@ class GameEngine {
             }
         }
 
-        List<MovementAction> orderedMovements = possibleMovements.stream().sorted((mv1, mv2) -> mv2.getDistanceTraveled().compareTo(mv1.getDistanceTraveled())).collect(Collectors.toList());
+        List<MovementAction> orderedMovements = possibleMovements.stream().sorted((mv1, mv2) -> mv1.getPriority().compareTo(mv2.getPriority())).collect(Collectors.toList());
         addMovements(orderedMovements);
     }
 
